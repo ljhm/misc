@@ -1,0 +1,15 @@
+{
+	"color_scheme": "Monokai.sublime-color-scheme",
+	"drag_text": false,
+	"find_selected_text": true,
+	"font_size": 15,
+	"fold_buttons": false,
+	"highlight_line": true,
+	"highlight_modified_tabs": true,
+	"rulers": [80],
+	"show_encoding": true,
+	"show_full_path": true,
+	"show_line_endings": true,
+	"theme": "Adaptive.sublime-theme",
+	"trim_trailing_white_space_on_save": true,
+}

@@ -1,0 +1,14 @@
+# Enter the project directory containing "CMakeLists.txt"
+$ cd hello
+
+# Create the "build" directory for temporary files
+$ mkdir build
+
+# Enter the build directory
+$ cd build
+
+# Generate Makefile with cmake
+$ cmake ..
+
+# Build with traditional make
+$ make

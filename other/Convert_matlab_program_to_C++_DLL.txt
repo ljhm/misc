@@ -1,0 +1,54 @@
+//Matlab, Octave
+
+1. deploytool
+
+command: deploytool
+version: Matlab R2013a, Visual Studio 2010
+type: C++ shared library
+exported: add matlab files contains functions to be exported
+shared: add dependent matlab files which don't attempt to be exported
+
+note:
+no need to add matlab entry / test script file;
+add MCRInstaller.exe to install matlab runtime on target machine
+
+2. nargout - number of output arguments
+
+% matlab code:
+
+function [ret1, ret2] = myfun(x)
+..
+end
+
+----
+
+myfun: function name
+[ret1, ret2]: return type
+ret1: output argument
+ret2: output argument
+x: input argument
+
+----
+
+in the exported C++ prototype for the corresponding matlab function myfun:
+myfun(int nargout, mwArray ret1, mwArray ret2, mwArray x);
+
+if both output arguments are expected to be returned, assign nargout as 2 :
+int nargout = 2;
+myfun(nargout, mwArray ret1, mwArray ret2, mwArray x);
+myfun(2, mwArray ret1, mwArray ret2, mwArray x);
+
+3. mwArray usage
+
+http://radio.feld.cvut.cz/matlab/toolbox/mathlib/cppmathug/workin20.html
+
+mwArray A = mwArray(5)
+mwArray A = mwArray("abcd");
+
+double x;
+mwArray A(5);
+x = A;
+
+double x;
+mwArray A(5);
+x = (double)A;

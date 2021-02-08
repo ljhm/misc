@@ -1,0 +1,71 @@
+/*
+https://www.hackingwithswift.com/quick-start/swiftui/adding-items-to-an-order-with-environmentobject
+
+https://www.hackingwithswift.com/quick-start/swiftui/observable-objects-environment-objects-and-published
+ 
+we’re going to create an instance of our order when the app launches, then pass it into our content view. 
+Any view that is inside that content view – anything that can call the content view its ancestor – will 
+automatically gain access to that environment object. Even better, when any view changes it, all other places 
+automatically update
+
+https://www.hackingwithswift.com/quick-start/swiftui/how-to-use-environmentobject-to-share-data-between-views
+ 
+Environment objects must be supplied by an ancestor view – if SwiftUI can’t find an environment object of the 
+correct type you’ll get a crash. This applies for previews too, so be careful.
+
+https://developer.apple.com/tutorials/swiftui/handling-user-input
+ 
+Just like on @State properties, you can access a binding to a member of the userData object by using the $ prefix.
+ 
+ */
+
+import SwiftUI
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+
+struct ContentView: View {
+    var myObj = MyClass() //define it once
+
+    var body: some View {
+        View2().environmentObject(myObj) //call this on ancestor view once
+    }
+}
+
+struct View2: View {
+    var body: some View {
+        VStack {
+            View3()
+            View4()
+        }
+    }
+}
+
+struct View3: View {
+    @EnvironmentObject var myObj: MyClass //no MyClass() initialization required, reference it in environment
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("View3")
+            TextField("input", text: $myObj.str) // with $ for binding, without $ for just the value
+        }
+    }
+}
+
+struct View4: View {
+    @EnvironmentObject var myObj: MyClass //no MyClass() initialization required, reference it in environment
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("View4")
+            TextField("input", text: $myObj.str) // with $ for binding, without $ for just the value
+        }
+    }
+}
+
+class MyClass: ObservableObject {
+    @Published var str = ""
+}

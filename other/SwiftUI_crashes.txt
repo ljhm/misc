@@ -1,0 +1,109 @@
+SwiftUI Picker in NavigationLink'ed view crashes
+
+tap “Picks >”, then tap “< View3”, then tap “< View2”, the app crashes.
+ 
+ 
+////
+ 
+ 
+import SwiftUI
+ 
+struct ContentView: View {
+    var body: some View {
+        View2()
+    }
+}
+ 
+struct View2: View {
+    var body: some View {
+        NavigationView {
+            List {
+                NavigationLink(destination: View3()) {
+                    Text("Link")
+                }
+            }
+            .navigationBarTitle(Text("View2"), displayMode: .inline)
+        }
+    }
+}
+ 
+struct View3: View {
+    @State private var picked = 0
+    static let picks = ["Pick1", "Pick2"]
+    var body: some View {
+        //NavigationView { //1.crash without this line. 2. it looks odd with this though
+            Form {
+                Picker("Picks", selection: $picked) {
+                    ForEach(0 ..< Self.picks.count) {
+                        Text(Self.picks[$0])
+                    }
+                }
+            }
+            .navigationBarTitle(Text("View3"), displayMode: .inline)
+        //}
+    }
+}
+ 
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+ 
+ 
+////
+ 
+ 
+2019-10-17 15:29:11.635759+0800 HelloSwiftUI[3928:189392] [TableView] Warning once only: 
+UITableView was told to layout its visible cells and other contents without being in 
+the view hierarchy (the table view or one of its superviews has not been added to a window). 
+This may cause bugs by forcing views inside the table view to load and perform layout 
+without accurate information (e.g. table view bounds, trait collection, layout margins, 
+safe area insets, etc), and will also cause unnecessary performance overhead due to extra 
+layout passes. Make a symbolic breakpoint at UITableViewAlertForLayoutOutsideViewHierarchy 
+to catch this in the debugger and see what caused this to occur, so you can avoid this 
+action altogether if possible, or defer it until the table view has been added to a window. 
+Table view: <_TtC7SwiftUIP33_BFB370BA5F1BADDC9D83021565761A4925UpdateCoalescingTableView: 
+0x7f8302931e00; baseClass = UITableView; frame = (0 0; 375 812); clipsToBounds = YES; 
+gestureRecognizers = <NSArray: 0x600003bc49f0>; layer = <CALayer: 0x600003517d60>; 
+contentOffset: {0, -140}; contentSize: {375, 161.00000000000003}; adjustedContentInset: 
+{140, 0, 34, 0}; dataSource: <_TtGC7SwiftUIP13$7fff2c69bad819ListCoreCoordinatorGVS_20SystemListDataSourceOs5Never_GOS_19SelectionManagerBoxS2___: 0x7f83024724c0>>
+(lldb)
+ 
+ 
+(lldb) bt
+* thread #1, queue = 'com.apple.main-thread', stop reason = EXC_BAD_INSTRUCTION (code=EXC_I386_INVOP, subcode=0x0)
+    frame #0: 0x00007fff2c2270bb SwiftUI`SwiftUI._VariadicView_Children.subscript.getter : (Swift.Int) -> SwiftUI._VariadicView_Children.Element + 235
+    frame #1: 0x00007fff2c2281d6 SwiftUI`protocol witness for Swift.Collection.subscript.read : (A.Index) -> A.Element in conformance SwiftUI._VariadicView_Children : Swift.Collection in SwiftUI + 38
+    frame #2: 0x00007fff2c450f31 SwiftUI`SwiftUI.ForEach.IDGenerator.makeID(data: A, index: A.Index, offset: Swift.Int) -> B + 289
+    frame #3: 0x00007fff2c453052 SwiftUI`SwiftUI.(DynamicContentState in _4103B39A1695DB4F1CFCE0B3FB46910F).update(view: SwiftUI.ForEach<A, B, C>) -> () + 1362
+    frame #4: 0x00007fff2c4565dd SwiftUI`SwiftUI.(DynamicContentState in _4103B39A1695DB4F1CFCE0B3FB46910F).Info.Init.apply(SwiftUI.ForEach<A, B, C>) -> SwiftUI.(DynamicContentState in _4103B39A1695DB4F1CFCE0B3FB46910F)<A, B, C>.Info + 29
+    frame #5: 0x00007fff2c456b40 SwiftUI`protocol witness for static AttributeGraph.UntypedAttribute._update(_: Swift.UnsafeMutableRawPointer, graph: __C.AGGraphRef, attribute: __C.AGAttribute) -> () in conformance SwiftUI.(DynamicContentState in _4103B39A1695DB4F1CFCE0B3FB46910F)<A, B, C>.Info.Init : AttributeGraph.UntypedAttribute in SwiftUI + 192
+    frame #6: 0x00007fff2f8f1849 AttributeGraph`partial apply forwarder + 25
+    frame #7: 0x00007fff2f8d9255 AttributeGraph`AG::Graph::UpdateStack::update() + 1111
+    frame #8: 0x00007fff2f8d9513 AttributeGraph`AG::Graph::update_attribute(unsigned int, bool) + 377
+    frame #9: 0x00007fff2f8dc698 AttributeGraph`AG::Graph::value_ref(AG::attribute_t, AGTypeID, bool*) + 84
+    frame #10: 0x00007fff2f8e4324 AttributeGraph`AG::Graph::EntryExit::update_entry() const + 60
+    frame #11: 0x00007fff2f8d9255 AttributeGraph`AG::Graph::UpdateStack::update() + 1111
+    frame #12: 0x00007fff2f8d9513 AttributeGraph`AG::Graph::update_attribute(unsigned int, bool) + 377
+    frame #13: 0x00007fff2f8de131 AttributeGraph`AG::Subgraph::update(unsigned int) + 929
+    frame #14: 0x00007fff2c10d100 SwiftUI`SwiftUI.ViewGraph.(runTransaction in _D63C4EB7F2B205694B6515509E76E98B)(in: __C.AGGraphRef) -> () + 224
+    frame #15: 0x00007fff2c10d517 SwiftUI`closure #1 (__C.AGGraphRef) -> (prefs: Swift.Bool, idealSize: Swift.Bool, outputs: SwiftUI.ViewGraph.Outputs) in SwiftUI.ViewGraph.updateOutputs(at: SwiftUI.Time) -> () + 103
+    frame #16: 0x00007fff2c10d1d1 SwiftUI`SwiftUI.ViewGraph.updateOutputs(at: SwiftUI.Time) -> () + 145
+    frame #17: 0x00007fff2c4af579 SwiftUI`closure #1 () -> () in closure #1 () -> () in (extension in SwiftUI):SwiftUI.ViewRendererHost.render(interval: Swift.Double, updateDisplayList: Swift.Bool) -> () + 1001
+    frame #18: 0x00007fff2c4aef8a SwiftUI`closure #1 () -> () in (extension in SwiftUI):SwiftUI.ViewRendererHost.render(interval: Swift.Double, updateDisplayList: Swift.Bool) -> () + 634
+    frame #19: 0x00007fff2c4a4274 SwiftUI`(extension in SwiftUI):SwiftUI.ViewRendererHost.render(interval: Swift.Double, updateDisplayList: Swift.Bool) -> () + 436
+    frame #20: 0x00007fff2c00a8ee SwiftUI`closure #1 () -> () in SwiftUI._UIHostingView.requestImmediateUpdate() -> () + 62
+    frame #21: 0x00007fff2c004849 SwiftUI`reabstraction thunk helper from @escaping @callee_guaranteed () -> () to @escaping @callee_unowned @convention(block) () -> () + 25
+    frame #22: 0x000000010f1dadf8 libdispatch.dylib`_dispatch_call_block_and_release + 12
+    frame #23: 0x000000010f1dbd6c libdispatch.dylib`_dispatch_client_callout + 8
+    frame #24: 0x000000010f1e9e24 libdispatch.dylib`_dispatch_main_queue_callback_4CF + 1500
+    frame #25: 0x00007fff23b0ce49 CoreFoundation`__CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__ + 9
+    frame #26: 0x00007fff23b07aa9 CoreFoundation`__CFRunLoopRun + 2329
+    frame #27: 0x00007fff23b06e66 CoreFoundation`CFRunLoopRunSpecific + 438
+    frame #28: 0x00007fff38346bb0 GraphicsServices`GSEventRunModal + 65
+    frame #29: 0x00007fff47578dd0 UIKitCore`UIApplicationMain + 1621
+  * frame #30: 0x000000010ed7fbeb HelloSwiftUI`main at AppDelegate.swift:12:7
+    frame #31: 0x00007fff516ecd29 libdyld.dylib`start + 1
+    frame #32: 0x00007fff516ecd29 libdyld.dylib`start + 1
+(lldb)

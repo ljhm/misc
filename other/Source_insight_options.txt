@@ -1,0 +1,12 @@
+1. Option / File Type Options: 
+Screen Font: Fixedsys
+Word Wrap
+Highlight references to selected symbol
+
+2. Option / Preferences:
+General / Source Tips: None
+Display / Popup Toolbar: No
+Syntax Formatting / Use only color formatting
+
+3. Search / Search ... :
+Wrap Around: No

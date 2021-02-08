@@ -1,0 +1,11 @@
+"cppreference.com"
+
+- C  C language  Expressions - compound literals
+
+    int *p = (int[]){2, 4};
+
+    struct point {double x,y;};
+    void drawline1(struct point from, struct point to);
+    drawline1((struct point){.x=1, .y=1},
+              (struct point){.x=3, .y=4});
+

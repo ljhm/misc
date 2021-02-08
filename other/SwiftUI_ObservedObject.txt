@@ -1,0 +1,46 @@
+// https://www.hackingwithswift.com/quick-start/swiftui/how-to-use-observedobject-to-manage-state-from-external-objects
+
+import SwiftUI
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+
+struct ContentView: View {
+    var myObj = MyStruct() //define it once
+
+    var body: some View {
+        VStack {
+            View2(myObj: myObj)
+            View3(myObj: myObj)
+        }
+    }
+}
+
+struct View2: View {
+    @ObservedObject var myObj: MyStruct //will be initialized by caller: View2(settings: settings)
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("View2")
+            TextField("input", text: $myObj.str) //with $ for binding, without $ for just the value
+        }
+    }
+}
+
+struct View3: View {
+    @ObservedObject var myObj: MyStruct //will be initialized by caller: View3(settings: settings)
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("View3")
+            TextField("input", text: $myObj.str) //with $ for binding, without $ for just the value
+        }
+    }
+}
+
+class MyStruct: ObservableObject {
+    @Published var str = ""
+}

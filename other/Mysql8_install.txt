@@ -1,0 +1,21 @@
+https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04
+
+How To Install MySQL 8 on Ubuntu 20.04
+
+
+$ sudo apt update
+$ sudo apt install mysql-server
+$ sudo mysql_secure_installation
+
+# auth_socket plugin requires invoking mysql with sudo privileges to gain access
+# to the root MySQL user:
+
+$ sudo mysql
+mysql> CREATE DATABASE SAMREENA_DB;
+mysql> CREATE USER 'sammy'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+mysql> GRANT PRIVILEGE ON database.table TO 'username'@'host';
+mysql> FLUSH PRIVILEGES;
+mysql> exit
+
+$ mysql -u sammy -p
+

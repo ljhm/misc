@@ -1,0 +1,11 @@
+By default, functions use their parameter names as labels for their arguments
+. Write a custom argument label before the parameter name, or write _ to use 
+no argument label.
+
+
+index does not have to be declared before it is used. It is implicitly 
+declared simply by its inclusion in the loop declaration, without the need 
+for a let declaration keyword.
+
+
+

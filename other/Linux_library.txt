@@ -1,0 +1,21 @@
+//编译生成共享库
+//Makefile
+OUT       = ../lib/libhello.so
+CFLAGS   += -fPIC
+LDFLAGS  += -shared
+
+//第3方库编译链接路径
+#compile time makefile linker path:
+LDFLAGS  = # -L../hello
+
+//第3方库运行路径
+#runtime dependency lib path
+# or, ldconfig, ld.so.conf
+# or, PATH environment variable on Windows and Linux
+# ~/.bashrc
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$NEW_LIB_PATH
+export LD_LIBRARY_PATH
+
+//第3方库打包路径
+//查询依赖库路径
+$ ldd ./a.out

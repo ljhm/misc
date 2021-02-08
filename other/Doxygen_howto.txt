@@ -1,0 +1,35 @@
+https://www.ibm.com/developerworks/aix/library/au-learningdoxygen/index.html
+
+1. install:
+doxygen,
+Graphviz
+
+2. generate Doxyfile file:
+
+$ doxygen -g
+
+3. run:
+
+$ doxygen Doxyfile 
+
+-----------------------------
+
+Doxyfile:
+
+CREATE_SUBDIRS         = YES
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_PACKAGE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_METHODS  = YES
+EXTRACT_ANON_NSPACES   = YES
+RECURSIVE              = YES
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = YES
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+GENERATE_LATEX         = NO
+HAVE_DOT               = YES
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+DOT_PATH               = "C:\Program Files (x86)\Graphviz2.38\bin"

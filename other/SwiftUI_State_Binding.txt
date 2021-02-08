@@ -1,0 +1,56 @@
+import SwiftUI
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+
+struct ContentView: View {
+    var body: some View {
+        View2()
+    }
+}
+
+
+/* @State, $
+ State property <=> UI Controls
+ textfield, picker, toggle, slider, stepper, ..
+
+ https://www.hackingwithswift.com/books/ios-swiftui/modifying-program-state
+
+ https://www.hackingwithswift.com/books/ios-swiftui/binding-state-to-user-interface-controls
+
+ This is what’s called a two-way binding: we bind the text field so that it shows the value of our property, 
+ but we also bind it so that any changes to the text field also update the property.
+ 
+https://developer.apple.com/tutorials/swiftui/working-with-ui-controls
+ 
+*/
+
+struct View2: View {
+    //@State, use it in single view or its subview or view called inside
+    @State var text = ""
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("View2")
+            TextField("input", text: $text) // with $ for binding, without $ for just its value
+            TextField("input", text: $text)
+            View3(text: $text)
+        }
+    }
+}
+
+struct View3: View {
+    //@Binding to @State
+    @Binding var text: String //no initialization, @Binding to @State
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("View3")
+            TextField("input", text: $text) // with $ for binding, without $ for just its value
+            TextField("input", text: $text)
+        }
+    }
+}

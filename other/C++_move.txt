@@ -1,0 +1,69 @@
+1. http://en.wikipedia.org/wiki/C++11
+
+A chronic performance problem with C++03 is the costly and unnecessary 
+deep copies that can happen implicitly when objects are passed by value.
+
+..
+
+Rvalue references can provide performance benefits to existing code 
+without needing to make any changes outside the standard library.
+
+..
+
+For safety reasons, some restrictions are imposed. A named variable will 
+never be considered to be an rvalue even if it is declared as such; in 
+order to get an rvalue, the function template std::move() should be 
+used. 
+
+..
+
+Rvalue references can also be modified only under certain circumstances, 
+being intended to be used primarily with move constructors.
+
+
+2. http://stroustrup.com/C++11FAQ.html
+
+In the C++11 standard library, all containers are provided with move 
+constructors and move assignment and operations that insert new 
+elements, such as insert() and push_back() have versions that take 
+rvalue references. The net result is that the standard containers and 
+algorithms quietly - without user intervention - improve in performance 
+because they copy less.
+
+..
+
+Effects of move: Moving can be much more efficient than copying (see 
+Move semantics). For example, move-based std::sort() and 
+std::set::insert() has been measured to be 15 times faster than copy 
+based versions. This is less impressive than it sounds because such 
+standard library operations for standard library types, such as string 
+and vector, are usually hand-optimized to gain the effects of moving 
+through techniques such as replacing copies with optimized swaps. 
+However, if your type has a move operation, you gain the performance 
+benefits automatically from the standard algorithms.
+
+..
+
+Move operators: Containers now have move constructors and move 
+assignments (in addition to the traditional copy operations). The most 
+important implication of this is that we can efficiently return a 
+container from a function:
+
+The point here is that no vectors are copied. Rewrite this to return a 
+free-store-allocated vector and you have to deal with memory management. 
+Rewrite this to pass the vector to be filled as an argument to 
+make_random() and you have a far less obvious code (plus an added 
+opportunity for making an error).
+
+..
+
+There is a push_back version that takes an rvalue reference argument so 
+that we can take advantage of string's move constructor. Note also the 
+use of the unified initializer syntax to avoid verbosity.
+
+
+3. http://stroustrup.com/bs_faq2.html
+
+The standard containers hold copies of values, and copy a value when you 
+put it into the container. This is essentially unbeatable for small 
+values, but can be quite unsuitable for huge objects

@@ -1,0 +1,20 @@
+1. standard shared library name: libxxx.so :
+
+$ gcc -fPIC -shared foo.c -o libfoo.so
+$ gcc -L. -lfoo a.c
+$ ls
+a.c		a.out		foo.c		foo.h		libfoo.so
+$ 
+
+2. non standard name without prefix "lib": xxx.so :
+
+$ gcc -fPIC -shared foo.c -o foo.so
+$ ls
+a.c	foo.c	foo.h	foo.so
+$ 
+$ gcc -L. foo.so a.c
+$ ls
+a.c	a.out	foo.c	foo.h	foo.so
+$ ./a.out
+foo.c:6 (foo)
+$ 

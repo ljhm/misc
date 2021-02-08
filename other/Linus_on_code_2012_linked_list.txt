@@ -1,0 +1,55 @@
+Linus Torvalds Answers Your Questions
+
+Posted Thursday October 11, 2012
+
+https://meta.slashdot.org/story/12/10/11/0030249/linus-torvalds-answers-your-questions
+
+
+Linus: Hmm. You do realize that I don't get all that close to the code 
+any more? I spend my time not coding, but reading emails, and merging 
+stuff others wrote. And when I *do* get involved with the code, it's 
+not because it's "cool", it's because it broke, and you'll find me 
+cursing the people who wrote it, and questioning their parentage and 
+that of their pets.
+
+So I very seldom get involved in the really cool code any more, I'm 
+afraid. I end up being involved in the "Holy sh*t, how did we ever 
+merge that cr*p" code. Perhaps not as much as Greg (who has to deal 
+with the staging tree), but then Greg is "special".
+
+That said, we do have lots of pretty cool code in the kernel. I'm 
+particularly proud of our filename lookup cache, but hey, I'm biased. 
+That code is *not* for the weak of heart, though, because the whole 
+lockless lookup (with fallbacks to more traditional locked code) is 
+hairy and subtle, and mortals are not supposed to really look at it. 
+It's been tweaked to some pretty extreme degrees, because it ends up 
+being involved any time you look up a filename. I still remember how 
+happy I was to merge the new lockless RCU filename lookup code last 
+year.
+
+At the opposite end of the spectrum, I actually wish more people 
+understood the really core low-level kind of coding. Not big, complex 
+stuff like the lockless name lookup, but simply good use of 
+pointers-to-pointers etc. For example, I've seen too many people who 
+delete a singly-linked list entry by keeping track of the "prev" entry, 
+and then to delete the entry, doing something like
+
+if (prev)
+    prev->next = entry->next;
+else
+    list_head = entry->next;
+
+and whenever I see code like that, I just go "This person doesn't 
+understand pointers". And it's sadly quite common.
+
+People who understand pointers just use a "pointer to the entry 
+pointer", and initialize that with the address of the list_head. And 
+then as they traverse the list, they can remove the entry without using 
+any conditionals, by just doing a "*pp = entry->next".
+
+So there's lots of pride in doing the small details right. It may not 
+be big and important code, but I do like seeing code where people 
+really thought about the details, and clearly also were thinking about 
+the compiler being able to generate efficient code (rather than hoping 
+that the compiler is so smart that it can make efficient code *despite* 
+the state of the original source code).

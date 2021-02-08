@@ -1,0 +1,11 @@
+http://www.boost.org/build/doc/html/bbv2/overview/builtins/features.html
+http://www.boost.org/build/doc/html/bbv2/overview/invocation.html
+http://www.boost.org/doc/libs/1_62_0/libs/config/doc/html/index.html
+http://www.boost.org/doc/libs/1_62_0/more/getting_started/windows.html
+
+$ ./bootstrap
+$ ./b2 variant=release link=shared
+$  sudo ./b2 install
+
+Makefile:
+CPPFLAGS += -DBOOST_ALL_DYN_LINK

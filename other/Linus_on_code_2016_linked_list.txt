@@ -1,0 +1,68 @@
+The mind behind Linux
+
+Linus Torvalds at TED 2016
+
+https://www.ted.com/talks/linus_torvalds_the_mind_behind_linux
+
+
+// Bad taste
+remove_list_entry(entry)
+{
+    prev = NULL;
+    walk = head;
+
+    // Walk the list
+
+    while (walk != entry){
+        prev = walk;
+        walk = walk->next;
+    }
+
+    // Remove the entry by updating the
+    // head or the previous entry
+
+    if (!prev)
+        head = entry->next;
+    else
+        prev->next = entry->next;
+}
+
+// Good taste
+remove_list_entry(entry)
+{
+    // The "indirect" pointer points to the
+    // *address* of the thing we'll update
+
+    indirect = &head;
+    
+    // Walk the list, looking for the thing that
+    // points to the entry we want to remove
+
+    while (*indirect != entry)
+        indirect = &(*indirect)->next;
+    
+    // .. and just remove it
+    *indirect = entry->next;
+}
+
+Linus: The most interesting part to me is the last if statement. 
+Because what happens in a singly-linked list -- this is trying to 
+remove an existing entry from a list -- and there's a difference 
+between if it's the first entry or whether it's an entry in the middle. 
+Because if it's the first entry, you have to change the pointer to the 
+first entry. If it's in the middle, you have to change the pointer of a 
+previous entry. So they're two completely different cases.
+
+And this is better. It does not have the if statement. And it doesn't 
+really matter -- I don't want you understand why it doesn't have the if 
+statement, but I want you to understand that sometimes you can see a 
+problem in a different way and rewrite it so that a special case goes 
+away and becomes the normal case. And that's good code. But this is 
+simple code. This is CS 101. This is not important -- although, details 
+are important.
+
+To me, the sign of people I really want to work with is that they have 
+good taste, which is how ... I sent you this stupid example that is not 
+relevant because it's too small. Good taste is much bigger than this. 
+Good taste is about really seeing the big patterns and kind of 
+instinctively knowing what's the right way to do things.
