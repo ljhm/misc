@@ -12,6 +12,7 @@ declaration that is a type specifier followed by a name and empty parentheses is
 declaration of a function that takes no arguments, not a declaration of an object
 with an empty initializer.
     T(a); // Variable named a of type T, not an invocation of the T(int) constructor
+    
     T b( ); // Function named b of no arguments, not a variable named b of type T
 
     T c(T(x)); // Declaration of a function named c, with one argument of type T
@@ -19,8 +20,7 @@ with an empty initializer.
 
 You can force the compiler to interpret the declaration as an object definition by enclosing
 one or more arguments in parentheses:
-    T c(  T x   );
-    T d(  T(x)  );
-    T e( (T(x)) );
+    T c(  T(x)  );
+    T d( (T(x)) );
 
 
