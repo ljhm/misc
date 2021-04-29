@@ -1,5 +1,6 @@
 {
     "breadcrumbs.enabled": false,
+    "C_Cpp.errorSquiggles": "Disabled",
     "C_Cpp.formatting": "Disabled",
     "C_Cpp.updateChannel": "Insiders",
     "debug.showBreakpointsInOverviewRuler": true,
