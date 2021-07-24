@@ -23,18 +23,19 @@
     "explorer.openEditors.sortOrder": "alphabetical",
     "extensions.ignoreRecommendations": true,
     "extensions.showRecommendationsOnlyOnDemand": true,
+    "files.autoSave": "afterDelay",
     "files.exclude": {
         "**/CVS": true,
-        "**/._.DS_Store": true,
-        "**/.DS_Store": true,
+        "**/*.d": true, //dep files
+        "**/*.DS_Store": true,
         "**/.git": true,
         "**/.gitignore": true,
         "**/.hg": true,
-        "**/.svn": true,
-        "**/.vscode": true,
-        "**/*.d": true, //dep files
         "**/*.o": true, //obj files
         "**/*.qbk": true,
+        "**/.svn": true,
+        "**/.swiftpm":true,
+        "**/.vscode": true,
     },
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
