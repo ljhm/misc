@@ -4,16 +4,16 @@
     "C_Cpp.errorSquiggles": "Disabled",
     "C_Cpp.formatting": "Disabled",
     "C_Cpp.updateChannel": "Insiders",
-    "debug.showBreakpointsInOverviewRuler": true,
+    "debug.showBreakpointsInOverviewRuler": true,
     "diffEditor.ignoreTrimWhitespace": false,
     "diffEditor.maxComputationTime": 0,
-    "editor.autoClosingBrackets": "never",
-    "editor.autoClosingQuotes": "never",
+    // "editor.autoClosingBrackets": "never",
+    // "editor.autoClosingQuotes": "never",
     "editor.copyWithSyntaxHighlighting": false,
     "editor.dragAndDrop": false,
     "editor.folding": false,
     "editor.fontSize": 14,
-    // "editor.fontWeight": "bold",
+    // "editor.fontWeight": "bold", //
     "editor.hover.enabled": false,
     // "editor.lineNumbers": "off", //
     "editor.minimap.enabled": false,
@@ -28,6 +28,7 @@
     "explorer.openEditors.sortOrder": "alphabetical",
     "extensions.ignoreRecommendations": true,
     "extensions.showRecommendationsOnlyOnDemand": true,
+    "files.autoSave": "afterDelay",
     "files.exclude": {
         "**/CVS": true,
         "**/*.d": true, //dep files
