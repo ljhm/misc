@@ -12,7 +12,7 @@
     "editor.copyWithSyntaxHighlighting": false,
     "editor.dragAndDrop": false,
     "editor.folding": false,
-    "editor.fontSize": 14,
+    "editor.fontSize": 12,
     // "editor.fontWeight": "bold", //
     "editor.hover.enabled": false,
     // "editor.lineNumbers": "off", //
@@ -54,7 +54,9 @@
     "outline.showEnums": false,
     "outline.showFields": false,
     "outline.showVariables": false,
+    "terminal.integrated.tabs.enabled": false,
     "window.title": "${activeEditorLong}",
+    "window.zoomLevel": 1,
     "workbench.editor.untitled.hint": "hidden",
     "workbench.settings.editor": "json", //ui, json
     "workbench.settings.useSplitJSON": true,
