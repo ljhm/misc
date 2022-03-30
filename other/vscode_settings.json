@@ -28,7 +28,6 @@
     "explorer.openEditors.sortOrder": "alphabetical",
     "extensions.ignoreRecommendations": true,
     "extensions.showRecommendationsOnlyOnDemand": true,
-    "files.autoSave": "afterDelay",
     "files.exclude": {
         "**/CVS": true,
         "**/*.d": true, //dep files
@@ -37,6 +36,7 @@
         "**/.gitignore": true,
         "**/.hg": true,
         "**/*.o": true, //obj files
+        "**/__pycache__": true,
         "**/*.qbk": true,
         "**/.svn": true,
         "**/.swiftpm":true,
@@ -54,11 +54,12 @@
     "outline.showEnums": false,
     "outline.showFields": false,
     "outline.showVariables": false,
-    "terminal.integrated.tabs.enabled": false,
     "window.title": "${activeEditorLong}",
-    "window.zoomLevel": 1,
     "workbench.editor.untitled.hint": "hidden",
     "workbench.settings.editor": "json", //ui, json
     "workbench.settings.useSplitJSON": true,
     "workbench.startupEditor": "newUntitledFile",
+    "files.autoSave": "afterDelay",
+    "window.zoomLevel": 1,
+
 }
