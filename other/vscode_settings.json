@@ -2,45 +2,41 @@
     "breadcrumbs.enabled": false,
     "C_Cpp.dimInactiveRegions": false,
     "C_Cpp.errorSquiggles": "Disabled",
-    "C_Cpp.formatting": "Disabled",
-    "C_Cpp.updateChannel": "Insiders",
     "debug.showBreakpointsInOverviewRuler": true,
-    "diffEditor.ignoreTrimWhitespace": false,
+    "debug.onTaskErrors": "showErrors",
     "diffEditor.maxComputationTime": 0,
-    // "editor.autoClosingBrackets": "never",
-    // "editor.autoClosingQuotes": "never",
     "editor.copyWithSyntaxHighlighting": false,
     "editor.dragAndDrop": false,
     "editor.folding": false,
-    "editor.fontSize": 12,
-    // "editor.fontWeight": "bold", //
+    "editor.fontSize": 14,
     "editor.hover.enabled": false,
     // "editor.lineNumbers": "off", //
     "editor.minimap.enabled": false,
     "editor.renderLineHighlight": "all",
-    "editor.renderWhitespace": "boundary", //
+    "editor.renderWhitespace": "boundary",
     "editor.roundedSelection": false,
-    "editor.rulers": [80], //
-    // "editor.wordWrap": "wordWrapColumn", //wordwrap
+    "editor.rulers": [
+        80
+    ],
+    // "editor.wordWrap": "wordWrapColumn", //
     "editor.wordWrapColumn": 80,
     "explorer.confirmDelete": false,
     "explorer.confirmDragAndDrop": false,
     "explorer.openEditors.sortOrder": "alphabetical",
     "extensions.ignoreRecommendations": true,
-    "extensions.showRecommendationsOnlyOnDemand": true,
+    "files.autoSave": "afterDelay",
     "files.exclude": {
         "**/CVS": true,
-        "**/*.d": true, //dep files
-        "**/*.DS_Store": true,
+        "**/*.d": true,
+        "**/*.dSYM": true,
+        "**/.DS_Store": true,
         "**/.git": true,
         "**/.gitignore": true,
         "**/.hg": true,
-        "**/*.o": true, //obj files
-        "**/__pycache__": true,
-        "**/*.qbk": true,
+        "**/*.o": true,
+        "**/*.o.tmp": true,
+        "**/.qbk": true,
         "**/.svn": true,
-        "**/.swiftpm":true,
-        "**/.vscode": true,
     },
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
@@ -48,6 +44,7 @@
     "git.enableSmartCommit": true,
     "git.ignoreRebaseWarning": true,
     "http.proxySupport": "off",
+    "outline.icons": false,
     "outline.showArrays": false,
     "outline.showBooleans": false,
     "outline.showConstants": false,
@@ -56,10 +53,8 @@
     "outline.showVariables": false,
     "window.title": "${activeEditorLong}",
     "workbench.editor.untitled.hint": "hidden",
-    "workbench.settings.editor": "json", //ui, json
+    "workbench.iconTheme": null,
+    "workbench.settings.editor": "json", //ui
     "workbench.settings.useSplitJSON": true,
     "workbench.startupEditor": "newUntitledFile",
-    "files.autoSave": "afterDelay",
-    "window.zoomLevel": 1,
-
 }
