@@ -3,8 +3,11 @@
     "C_Cpp.dimInactiveRegions": false,
     "C_Cpp.errorSquiggles": "Disabled",
     "C_Cpp.formatting": "Disabled",
-    "debug.showBreakpointsInOverviewRuler": true,
+    "clangd.fallbackFlags": [
+        "-std=c++2a",
+    ],
     "debug.onTaskErrors": "showErrors",
+    "debug.showBreakpointsInOverviewRuler": true,
     "diffEditor.maxComputationTime": 0,
     "editor.copyWithSyntaxHighlighting": false,
     "editor.dragAndDrop": false,
@@ -53,9 +56,13 @@
     "outline.showFields": false,
     "outline.showVariables": false,
     "window.title": "${activeEditorLong}",
+    "terminal.integrated.tabs.enabled": false,
     "workbench.editor.untitled.hint": "hidden",
     "workbench.iconTheme": null,
     "workbench.settings.editor": "json", //ui
     "workbench.settings.useSplitJSON": true,
     "workbench.startupEditor": "newUntitledFile",
+    "vim.hlsearch": true,
+    "vim.overrideCopy": false,
+    "vim.wrapscan": false,
 }
