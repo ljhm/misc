@@ -1,12 +1,14 @@
 {
     "breadcrumbs.enabled": false,
+    "C_Cpp.clang_format_fallbackStyle": "LLVM",
     "C_Cpp.dimInactiveRegions": false,
     "C_Cpp.errorSquiggles": "Disabled",
-    "C_Cpp.formatting": "Disabled",
+    "C_Cpp.formatting": "clangFormat",
     "clangd.arguments": [
         "--fallback-style=None",
     ],
     "clangd.fallbackFlags": [
+        // "-std=c99",
         "-std=c++2a",
     ],
     "debug.onTaskErrors": "showErrors",
