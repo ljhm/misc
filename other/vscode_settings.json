@@ -1,9 +1,8 @@
 {
     "breadcrumbs.enabled": false,
-    "C_Cpp.clang_format_fallbackStyle": "LLVM",
     "C_Cpp.dimInactiveRegions": false,
     "C_Cpp.errorSquiggles": "Disabled",
-    "C_Cpp.formatting": "clangFormat",
+    "C_Cpp.formatting": "Disabled",
     "clangd.arguments": [
         "--fallback-style=None",
     ],
