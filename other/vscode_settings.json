@@ -1,5 +1,6 @@
 {
   "breadcrumbs.enabled": false,
+  "breadcrumbs.icons": false,
   "C_Cpp.dimInactiveRegions": false,
   "C_Cpp.errorSquiggles": "Disabled",
   "C_Cpp.formatting": "Disabled",
@@ -32,6 +33,7 @@
   "editor.rulers": [
     80
   ],
+  "editor.suggest.showIcons": false,
   // "editor.wordWrap": "wordWrapColumn", //
   "editor.wordWrapColumn": 80,
   "explorer.confirmDelete": false,
@@ -73,8 +75,8 @@
   "outline.showStrings": false,
   "outline.showVariables": false,
   "terminal.integrated.tabs.enabled": false,
-  "window.commandCenter": true,
   "window.title": "${activeEditorLong}",
+  "workbench.editor.showIcons": false,
   "workbench.editor.untitled.hint": "hidden",
   "workbench.iconTheme": null,
   "workbench.settings.editor": "json", //ui
