@@ -74,6 +74,7 @@
   "outline.showProperties": false,
   "outline.showStrings": false,
   "outline.showVariables": false,
+  "terminal.integrated.shellIntegration.decorationsEnabled": "never",
   "terminal.integrated.tabs.enabled": false,
   "window.title": "${activeEditorLong}",
   "workbench.editor.showIcons": false,
