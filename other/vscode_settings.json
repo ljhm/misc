@@ -1,9 +1,10 @@
 {
   "breadcrumbs.enabled": false,
   "breadcrumbs.icons": false,
+  "C_Cpp.clang_format_fallbackStyle": "none",
   "C_Cpp.dimInactiveRegions": false,
   "C_Cpp.errorSquiggles": "Disabled",
-  "C_Cpp.formatting": "Disabled",
+  "C_Cpp.formatting": "clangFormat",
   "clangd.arguments": [
     "--fallback-style=None",
   ],
