@@ -7,11 +7,12 @@
   "C_Cpp.formatting": "clangFormat",
   "clangd.arguments": [
     "--fallback-style=None",
-    "--enable-config",
   ],
   "clangd.fallbackFlags": [
     // "-std=c99",
-    // "-std=c++2a",
+    "-std=c++2a",
+    "-I${workspaceFolder}",
+    "-I${workspaceFolder}/boost",
   ],
   "clangd.semanticHighlighting": false,
   "debug.onTaskErrors": "showErrors",
