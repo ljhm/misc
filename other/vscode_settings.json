@@ -83,6 +83,7 @@
   "outline.showProperties": false,
   "outline.showStrings": false,
   "outline.showVariables": false,
+  "python.formatting.provider": "none",
   "rust-analyzer.completion.autoimport.enable": false,
   "rust-analyzer.completion.autoself.enable": false,
   "rust-analyzer.completion.callable.snippets": "none",
