@@ -36,7 +36,7 @@
   "editor.renderWhitespace": "boundary",
   "editor.roundedSelection": false,
   "editor.rulers": [
-    72, //python pep8
+    72,
   ],
   "editor.semanticHighlighting.enabled": false,
   "editor.suggest.showIcons": false,
