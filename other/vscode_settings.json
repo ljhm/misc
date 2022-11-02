@@ -89,6 +89,7 @@
   "rust-analyzer.completion.callable.snippets": "none",
   "rust-analyzer.completion.postfix.enable": false,
   "rust-analyzer.hover.actions.enable": false,
+  "rust-analyzer.inlayHints.typeHints.enable": true,
   "rust-analyzer.lens.enable": false,
   "terminal.integrated.persistentSessionReviveProcess": "never",
   "terminal.integrated.shellIntegration.decorationsEnabled": "never",
