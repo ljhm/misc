@@ -4,13 +4,14 @@
   "C_Cpp.clang_format_fallbackStyle": "none",
   "C_Cpp.dimInactiveRegions": false,
   "C_Cpp.errorSquiggles": "Disabled",
-  "C_Cpp.formatting": "clangFormat",
+  // "C_Cpp.formatting": "clangFormat",
+  "C_Cpp.formatting": "none",
   "clangd.arguments": [
     "--fallback-style=None",
     "--header-insertion=never",
   ],
   "clangd.fallbackFlags": [
-    "-std=c++2a",
+    // "-std=c++2a",
     // "-I${workspaceFolder}/boost",
   ],
   "clangd.semanticHighlighting": false,
