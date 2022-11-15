@@ -47,7 +47,6 @@
   "explorer.confirmDragAndDrop": false,
   "explorer.openEditors.sortOrder": "alphabetical",
   "extensions.ignoreRecommendations": true,
-  "files.autoSave": "afterDelay",
   "files.exclude": {
     "**/CVS": true,
     "**/.DS_Store": true,
