@@ -1,0 +1,217 @@
+// c/c++ source file
+
+source file:
+declarations
+type declaration
+variable declaration //global
+function declaration
+
+function:
+variable declaration //local
+statements
+expressions statement
+control statement
+assignment statement
+
+
+---
+
+
+// c/c++ initialization
+
+//  =  for initialization (and assignment): basic types
+//char, int, float, double, pointers, array element and structure
+//assignment
+int n = 123;
+
+//  {}  for initialization: array, structure, c++ vector
+int a1[10] = {0};
+int a2[] = “hello”; //a2 with nul
+struct point {int x,y} pt = {10, 20};
+vector<string> articles = {"a", "an", "the"};
+
+//  ()  for initialization: c++ class type
+//library string without nul, string::c_str() with nul
+string s1("hello");
+string s2 = "hello";
+string s3(10, ’c’);
+string s4 = string(10, ’c’);
+
+
+---
+
+
+// integral promotion
+
+#include <iostream>
+#include <climits>
+
+int main()
+{
+    unsigned char a = UCHAR_MAX;
+    unsigned short b = USHRT_MAX;
+    unsigned int c = UINT_MAX;
+    unsigned long d = ULONG_MAX;
+    unsigned long long e = ULLONG_MAX;
+
+    std::cout << a + 1 << "\n"; // 256
+    std::cout << b + 1 << "\n"; // 65536
+    std::cout << c + 1 << "\n"; // 0
+    std::cout << d + 1 << "\n"; // 0
+    std::cout << e + 1 << "\n"; // 0
+}
+
+
+// https://en.cppreference.com/w/cpp/language/implicit_conversion
+
+prvalues of small integral types (such as char) may be converted to
+prvalues of larger integral types (such as int).
+
+In particular, arithmetic operators do not accept types smaller
+than int as arguments, and integral promotions are automatically applied
+after lvalue-to-rvalue conversion, if applicable.
+
+
+// K&R C 2nd:
+
+2.7 Type Conversions:
+Otherwise, convert char and short to int.
+
+A.6.1 Integral Promotion:
+A character, a short integer, ..is converted to int;
+
+
+---
+
+
+// temporary
+
+#include <iostream>
+
+int main() {
+  // Temporary of an temporary
+  const char *a = (std::string("abc")).c_str(); //error
+
+  // https://en.cppreference.com/w/cpp/language/lifetime
+  // lifetime of a temporary object may be extended by binding to
+  // a const lvalue reference
+  const std::string &b = std::string("abc");    //ok
+  const char *c = b.c_str();                    //ok
+  std::cout << c << "\n";
+}
+
+
+---
+
+
+// Sequence point occurs:
+
+$ 7.12.1, C A reference manual, 5th
+- at the end of a full expression--that is,
+    an initializer, an expression statement, the expression in a return
+    statement, and the control expressions in a conditional, iterative,
+    or switch statement (including each expression in a for statement)
+- after the first operand of a &&, ||, ?:, or comma operator
+- after the evaluation of the arguments and function expression in a
+    function call
+
+
+---
+
+
+// https://en.wikipedia.org/wiki/Procedural_programming
+
+Procedures, also known as routines, subroutines, or functions (not to be
+confused with mathematical functions, but similar to those used in
+functional programming), simply contain a series of computational steps
+to be carried out
+
+. Any given procedure might be called at any point during a program's
+execution, including by other procedures or itself. The first major
+procedural programming languages first appeared circa 1960, including
+Fortran, ALGOL, COBOL and BASIC.[1] Pascal and C were published closer
+to the 1970s, while Ada was released in 1980.[1] Go is an example of a
+more modern procedural language, first published in 2009.
+
+Because of the ability to specify a simple interface, to be
+self-contained, and to be reused, procedures are a convenient vehicle
+for making pieces of code written by different people or different
+groups, including through programming libraries.
+
+
+---
+
+
+// https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
+
+In software engineering, don't repeat yourself (DRY) is a principle of
+software development aimed at reducing repetition of software patterns,
+replacing them with abstractions; and several copies of the same data,
+using data normalization to avoid redundancy.
+
+
+---
+
+
+// https://en.wikipedia.org/wiki/Code_reuse
+
+Code reuse has been practiced from the earliest days of programming.
+Programmers have always reused sections of code, templates, functions,
+and procedures.
+
+The software library is a good example of code reuse. Programmers may
+decide to create internal abstractions so that certain parts of their
+program can be reused, or may create custom libraries for their own use.
+Some characteristics that make software more easily reusable are
+modularity, loose coupling, high cohesion, information hiding and
+separation of concerns.
+
+
+---
+
+
+// https://en.wikipedia.org/wiki/Structured_programming
+
+Subroutines; callable units such as procedures, functions, methods, or
+subprograms are used to allow a sequence to be referred to by a single
+statement.
+
+
+--
+
+
+// https://en.wikipedia.org/wiki/Abstraction_principle_(computer_programming)
+
+The abstraction principle is often stated in the context of some
+mechanism intended to facilitate abstraction. The basic mechanism of
+control abstraction is a function or subroutine.
+
+
+---
+
+
+// https://en.wikipedia.org/wiki/Unix_philosophy
+
+The Unix philosophy, originated by Ken Thompson, is a set of cultural
+norms and philosophical approaches to minimalist, modular software
+development.
+
+Write programs that do one thing and do it well.
+Write programs to work together.
+Write programs to handle text streams, because that is a universal
+  interface.
+
+
+--
+
+
+// https://en.wikipedia.org/wiki/Modular_programming
+
+With modular programming, concerns are separated such that modules
+perform logically discrete functions, interacting through well-defined
+interfaces.
+
+
+---
+
+
