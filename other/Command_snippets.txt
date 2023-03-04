@@ -1,23 +1,23 @@
-# find
+## find
 
 $ find . -name "a.c"
 
-# find -exec
+## find -exec
 
 $ find . -name "a.c" -exec grep -l "main" {} \;
 $ find . -type f -exec sed -i 's/catch/repl/g' {} \;
 $ find . -name "*.c" -exec grep -l hello {} \; -exec rm {} \;
 
-//macOS, ^M: Ctrl-v Ctrl-m, replace ^M with \n
+## macOS, ^M: Ctrl-v Ctrl-m, replace ^M with \n
 $ find . -type f -name "*.txt" -exec sed -i '' -e 's/^M/\'$'\n''/g' {} \;
 
-//tr replaces one single character with another single character
+## tr replaces one single character with another single character
 $ tr '\r' '\n' < Textfile.txt > Newfile.txt
 
-# find | xargs
-
+## find | xargs
 $ find . -name "a.c" -print0 | xargs -0 grep -l "main"
-# find and rename, {} matches found filename
+
+## find and rename, {} matches found filename
 $ find . -name "*.txt" -exec mv {} {}.txt \;
 
 $ find arch -name bzImage -exec ls -l {} \;
@@ -30,7 +30,7 @@ lrwxrwxrwx 1 ljh ljh      22 Jul  2 01:04 arch/x86_64/boot/bzImage
 -rw-rw-r-- 1 ljh ljh 9654720 Jul  1 21:36 arch/x86/boot/bzImage
 $
 
-# linux directory folder size
+## linux directory folder size
 
 $ du -h --max-depth=1 /home | sort -hr
 
@@ -40,13 +40,13 @@ $ du -h -d1 /home/* | sort -hr | head -5
 0	/home/ljh/.config
 $
 
-# perl rename
+## perl rename
 
 $ find . -name "*.txt" -print0 | xargs -0 rename 's/\.txt$//' "*.txt"
 $ find . -name "*.txt" -print0 | xargs -0 rename 's/\.txt$/\.doc/' "*.txt"
 $ find . -name "*.txt" -print0 | xargs -0 rename -n 's/\.txt$//' "*.txt"
 
-# find in current directory excluding sub directories
+## find in current directory excluding sub directories
 
 $ find /home/jhl -name "*.txt" -maxdepth 1
 $ p='/home/jhl'; d='/*'; \
@@ -56,12 +56,19 @@ $ p='/home/jhl'; d='/*/*'; \
 $ p='/home/jhl'; d='/*/*'; \
   find "$p" -name "*.h" -type f ! -path "$p$d"
 
-# find largest files (-type f) or directories (-type d)
+## find largest files (-type f) or directories (-type d)
 
 $ find . -type f -exec du -h {} + | sort -rh | uniq | view -
 $ find . -type d -exec du -h {} + | sort -rh | uniq | view -
 
-# cut by field / column, default delimiter: TAB
+## tree with find
+$ find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
+
+## find large size directories or files
+$ du -h -d1 /home/* | sort -hr | head -5
+
+
+## cut by field / column, default delimiter: TAB
 $ date | cut -f 2
 Fri Dec 14 04:46:54 EST 2018
 $ date | cut -f 2 -d ' '
@@ -70,30 +77,62 @@ $ date | awk '{print $2}'
 Dec
 $
 
-# sort by field / column
+## sort by field / column
 $ sort -u -k 3,3 a
 
 $ du -h --max-depth=1 /home | sort -hr | view -
 
-# redirect stdout stderr to vi
+## redirect stdout stderr to vi
 $ make 2>&1 | vi -
 
-# list port listened
+## list port listened
 $ sudo netstat -plnt
 
-# process started time
+## process started time
 $ ls -ld /proc/29550
 dr-xr-xr-x. 9 lijh lijh 0 Nov 26 14:09 /proc/29550
 $ ps -eo pid,lstart,cmd | grep sshd
  29550 Mon Nov 26 14:09:46 2018 ./sshd
 $
 
-# bash/zsh output with color escape code
-# tput is more portable for color
-$
+## bash/zsh output with color escape code
+## tput is more portable for color
+
 $ echo    "hello `tput setaf 1` RED   `tput sgr0` world  "
 $ printf  "hello `tput setaf 2` GREEN `tput sgr0` world\n"
 $
 $ echo -e "hello \033[0;31m     RED   \033[0m     world  "
 $ printf  "hello \033[0;32m     GREEN \033[0m     world\n"
 $
+
+---
+
+## echo with source location
+#!/usr/bin/bash
+shopt -s expand_aliases
+alias echo='echo $BASH_SOURCE:$LINENO:$FUNCNAME: '
+echo "hello" # file:123:: hello
+
+## bash parameter expansion
+name=abc.txt
+echo ${name%.*} # abc
+echo ${name#*.} # txt
+
+version=1.2.3
+echo ${version%%.*} # 1
+echo ${version##*.} # 3
+echo ${version%.*} # 1.2
+echo ${version#*.} # 2.3
+echo ${version//./ } # 1.2.3 -> 1 2 3
+
+---
+
+## Makefile: String Substitution and Analysis
+
+# $(call makever,1.2.3)
+define makever
+$(subst ., ,$(1)) # 1.2.3 => 1 2 3
+$(word 1,$(subst ., ,$(1))) # 1
+endef
+
+---
