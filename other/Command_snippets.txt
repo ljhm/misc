@@ -15,9 +15,11 @@ $ find . -type f -name "*.txt" -exec sed -i '' -e 's/^M/\'$'\n''/g' {} \;
 $ tr '\r' '\n' < Textfile.txt > Newfile.txt
 
 ## find | xargs
+
 $ find . -name "a.c" -print0 | xargs -0 grep -l "main"
 
 ## find and rename, {} matches found filename
+
 $ find . -name "*.txt" -exec mv {} {}.txt \;
 
 $ find arch -name bzImage -exec ls -l {} \;
@@ -30,7 +32,7 @@ lrwxrwxrwx 1 ljh ljh      22 Jul  2 01:04 arch/x86_64/boot/bzImage
 -rw-rw-r-- 1 ljh ljh 9654720 Jul  1 21:36 arch/x86/boot/bzImage
 $
 
-## linux directory folder size
+## find large directories or files
 
 $ du -h --max-depth=1 /home | sort -hr
 
@@ -56,19 +58,12 @@ $ p='/home/jhl'; d='/*/*'; \
 $ p='/home/jhl'; d='/*/*'; \
   find "$p" -name "*.h" -type f ! -path "$p$d"
 
-## find largest files (-type f) or directories (-type d)
-
-$ find . -type f -exec du -h {} + | sort -rh | uniq | view -
-$ find . -type d -exec du -h {} + | sort -rh | uniq | view -
-
 ## tree with find
+
 $ find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
 
-## find large size directories or files
-$ du -h -d1 /home/* | sort -hr | head -5
-
-
 ## cut by field / column, default delimiter: TAB
+
 $ date | cut -f 2
 Fri Dec 14 04:46:54 EST 2018
 $ date | cut -f 2 -d ' '
@@ -78,17 +73,19 @@ Dec
 $
 
 ## sort by field / column
+
 $ sort -u -k 3,3 a
 
-$ du -h --max-depth=1 /home | sort -hr | view -
-
 ## redirect stdout stderr to vi
+
 $ make 2>&1 | vi -
 
 ## list port listened
+
 $ sudo netstat -plnt
 
 ## process started time
+
 $ ls -ld /proc/29550
 dr-xr-xr-x. 9 lijh lijh 0 Nov 26 14:09 /proc/29550
 $ ps -eo pid,lstart,cmd | grep sshd
@@ -134,5 +131,40 @@ define makever
 $(subst ., ,$(1)) # 1.2.3 => 1 2 3
 $(word 1,$(subst ., ,$(1))) # 1
 endef
+
+---
+
+$ top
+PID USER  PR   NI   VIRT   RES   SHR S  %CPU  %MEM    TIME+ COMMAND
+1332 ljh   20   0  20.0t  6.1m  4.2m R  53.9   0.2  0:26.60 ./build/server 9995
+1338 ljh   20   0  20.0t  6.0m  4.1m S  20.3   0.2  0:08.56 ./build/client 192.168.1.4 9995 bbb
+1335 ljh   20   0  20.0t  6.1m  4.2m R  21.2   0.2  0:14.59 ./build/client 192.168.1.4 9995 aaa
+$
+
+Interactive key sequence:
+
+x b > c L e
+
+Help on keys:
+
+x   : highlight sort field
+b   : toggle bold
+>   : move sort column
+c   : toggle command name and line
+L/& : find/again
+e/E : toggle memory unit
+
+<   : left angle bracket
+>   : right angle bracket
+
+<-  : arrow left
+->  : arrow right
+^   : arrow up
+v   : arrow down
+
+Memory usage:
+
+RES = CODE + DATA
+%MEM = RES / total
 
 ---
