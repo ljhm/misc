@@ -107,6 +107,11 @@ int main() {
 struct T{};
 (struct T){} = (struct T){};
 
+https://en.cppreference.com/w/c/language/value_category :
+compound literals, which look similar, are lvalues
+
+https://en.cppreference.com/w/c/language/compound_literal :
+The value category of a compound literal is lvalue (its address can be taken)
 
 Answer (by cursor.so):
 
