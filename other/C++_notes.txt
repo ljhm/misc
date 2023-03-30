@@ -104,6 +104,37 @@ int main() {
 ---
 
 
+struct T{};
+(struct T){} = (struct T){};
+
+
+Answer (by cursor.so):
+
+In both C99 and C11, compound literals are assignable.
+
+According to the C99 and C11 standards, section 6.5.16.1, "The result of
+the compound literal is an lvalue." This means that the compound literal
+can be assigned to a variable or used as the operand of an assignment
+operator.
+
+Here is an example of assigning a compound literal to a variable in C:
+
+int *p = (int []){1, 2, 3};
+
+
+In this example, the compound literal (int []){1, 2, 3} creates an array
+of integers with the values 1, 2, and 3. The array is then assigned to
+the pointer variable p.
+
+Therefore, the answer to your question is yes, compound literals in C
+are assignable.
+
+If you have any further questions, feel free to ask.
+
+
+---
+
+
 // Sequence point occurs:
 
 $ 7.12.1, C A reference manual, 5th
