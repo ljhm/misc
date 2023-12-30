@@ -2,6 +2,11 @@
   "breadcrumbs.enabled": false,
   "breadcrumbs.icons": false,
   "C_Cpp.clang_format_fallbackStyle": "none",
+  "C_Cpp.default.cppStandard": "c++17",
+  "C_Cpp.default.cStandard": "c17",
+  "C_Cpp.default.includePath": [
+    "${workspaceFolder}/src/foo",
+  ],
   "C_Cpp.dimInactiveRegions": false,
   "C_Cpp.errorSquiggles": "Disabled",
   // "C_Cpp.formatting": "clangFormat",
@@ -13,11 +18,13 @@
   "clangd.fallbackFlags": [
     // "-std=c++2a",
     "-I../foo",
+
   ],
   "clangd.semanticHighlighting": false,
   "debug.onTaskErrors": "showErrors",
   "debug.showBreakpointsInOverviewRuler": true,
   "diffEditor.maxComputationTime": 0,
+  "editor.accessibilitySupport": "off",
   "editor.codeLens": false,
   "editor.copyWithSyntaxHighlighting": false,
   "editor.dragAndDrop": false,
@@ -50,6 +57,7 @@
   "git.autofetch": true,
   "git.enableSmartCommit": true,
   "git.ignoreRebaseWarning": true,
+  "git.openRepositoryInParentFolders": "never",
   "go.toolsEnvVars": {
     "LD_LIBRARY_PATH": "/path/to/lib",
   },
@@ -92,9 +100,8 @@
   "vim.overrideCopy": false,
   "vim.wrapscan": false,
   "window.title": "${activeEditorLong}",
-  "workbench.colorTheme": "Default Dark Modern",
   "workbench.editor.showIcons": false,
-  "workbench.editor.untitled.hint": "hidden",
+  "workbench.editor.empty.hint": "hidden",
   "workbench.iconTheme": null,
   "workbench.settings.editor": "json", //ui
   "workbench.settings.useSplitJSON": true,
