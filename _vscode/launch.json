@@ -1,15 +1,14 @@
+// clangd codelldb on macos linux
+
 {
   "configurations": [
     {
       "name": "Debug",
-      "type": "cppdbg",
-      "request": "launch",
+      "type": "lldb",
       "program": "${fileDirname}/${fileBasenameNoExtension}",
       "args": [],
-      "stopAtEntry": false,
       "cwd": "${fileDirname}",
-      "environment": [],
-      "MIMode": "lldb", // "gdb",
+      "request": "launch",
       "preLaunchTask": "make",
     }
   ],
