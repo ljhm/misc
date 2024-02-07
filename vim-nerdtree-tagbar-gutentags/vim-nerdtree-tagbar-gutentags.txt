@@ -34,20 +34,23 @@ set updatetime=100
 filetype on
 syntax off
 
-" NERDTree
+"" NERDTree
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 autocmd VimEnter * NERDTree
 let g:NERDTreeNodeDelimiter = "\u00a0"
-nnoremap <C-n> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
+nnoremap <F5> :NERDTreeToggle<CR>
+nnoremap <F6> :NERDTreeFind<CR>
 
-" tagbar
+"" tagbar
+" https://github.com/preservim/tagbar/issues/851
+autocmd QuitPre * qall
+autocmd VimEnter * Tagbar
 let g:tagbar_sort = 0
-nmap <F8> :TagbarToggle<CR>
+nnoremap <F7> :TagbarToggle<CR>
 
-" gutentags: ctags: Ctrl-], Ctrl-t
-" mkdir ~/project_root_dir/.git
+"" gutentags: ctags: Ctrl-], Ctrl-t
+" $ mkdir ~/project_root_dir/.git
 let g:gutentags_add_default_project_roots = 1
 
 $
