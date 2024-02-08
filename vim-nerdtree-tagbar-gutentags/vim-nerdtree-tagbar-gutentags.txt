@@ -23,6 +23,7 @@ set autoindent
 set expandtab
 set hlsearch
 set incsearch
+set mouse=a
 set noerrorbells
 set novisualbell
 set nowrapscan
