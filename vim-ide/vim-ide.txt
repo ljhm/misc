@@ -24,12 +24,9 @@ set expandtab
 set hlsearch
 set incsearch
 set mouse=a
-set noerrorbells
-set novisualbell
 set nowrapscan
 set number
 set shiftwidth=4
-set t_vb=
 set tabstop=4
 set updatetime=100
 filetype on
@@ -53,6 +50,9 @@ nnoremap <F7> :TagbarToggle<CR>
 "" gutentags: ctags: Ctrl-], Ctrl-t
 " $ mkdir ~/project_root_dir/.git
 let g:gutentags_add_default_project_roots = 1
+
+"" :Termdebug a.out
+packadd termdebug
 
 $
 $
