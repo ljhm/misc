@@ -13,7 +13,7 @@ $ vim -u NONE -c "helptags ~/.vim/pack/vendor/start/gutentags/doc" -c q
 
 // jump to definition
 $ git clone https://github.com/universal-ctags/ctags.git
-$ cd ctags && ./autogen && ./configure && make && make install
+$ cd ctags && ./autogen.sh && ./configure && make && make install
 $
 
 $
@@ -23,7 +23,7 @@ set autoindent
 set expandtab
 set hlsearch
 set incsearch
-set mouse=a
+set mouse=a " Win:SHIFT+mouse, Mac:fn+mouse
 set nowrapscan
 set number
 set shiftwidth=4
@@ -54,5 +54,5 @@ let g:gutentags_add_default_project_roots = 1
 "" :Termdebug a.out
 packadd termdebug
 
-$
-$
+$ 
+$ 
