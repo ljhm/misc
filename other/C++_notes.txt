@@ -1,3 +1,4 @@
+
 // c/c++ source file
 
 source file:
@@ -34,8 +35,8 @@ vector<string> articles = {"a", "an", "the"};
 //library string without nul, string::c_str() with nul
 string s1("hello");
 string s2 = "hello";
-string s3(10, ’c’);
-string s4 = string(10, ’c’);
+string s3(10, 'c');
+string s4 = string(10, 'c');
 
 
 ---
@@ -48,17 +49,29 @@ string s4 = string(10, ’c’);
 
 int main()
 {
-    unsigned char      a = UCHAR_MAX;
-    unsigned short     b = USHRT_MAX;
-    unsigned int       c = UINT_MAX;
-    unsigned long      d = ULONG_MAX;
-    unsigned long long e = ULLONG_MAX;
+    unsigned char       a = UCHAR_MAX;
+    unsigned short      b = USHRT_MAX;
+    int                 c = INT_MAX;
+    unsigned int        d = UINT_MAX;
+    unsigned long       e = ULONG_MAX;
+    unsigned long long  f = ULLONG_MAX;
 
-    std::cout <<       a + 1 << "\n"; // 256
-    std::cout <<       b + 1 << "\n"; // 65536
-    std::cout <<       c + 1 << "\n"; // 0
-    std::cout <<       d + 1 << "\n"; // 0
-    std::cout <<       e + 1 << "\n"; // 0
+    std::cout << UCHAR_MAX  << "\t: " << UCHAR_MAX + 1  << "\n";
+    std::cout << USHRT_MAX  << "\t: " << USHRT_MAX + 1  << "\n";
+    std::cout << INT_MAX    << "\t: " << INT_MAX + 1  << "\n"; // overflow
+    std::cout << UINT_MAX   << "\t: " << UINT_MAX + 1  << "\n";
+    std::cout << ULONG_MAX  << "\t: " << ULONG_MAX + 1  << "\n";
+    std::cout << ULLONG_MAX << "\t: " << ULLONG_MAX + 1  << "\n";
+
+    std::cout << '\n';
+
+    std::cout << a  << "\t: " << a + 1  << "\n";
+    std::cout << b  << "\t: " << b + 1  << "\n";
+    std::cout << c  << "\t: " << c + 1  << "\n";
+    std::cout << d  << "\t: " << d + 1  << "\n";
+    std::cout << e  << "\t: " << e + 1  << "\n";
+    std::cout << f  << "\t: " << f + 1  << "\n";
+
 }
 
 
@@ -273,3 +286,189 @@ interfaces.
 ---
 
 
+will line #2 and #3 print different result. what's the diff btw them?
+
+```
+    int c = INT_MAX;
+    std::cout << INT_MAX + 1  << "\n";   // line #2
+    std::cout << c + 1        << "\n";   // line #3
+```
+
+6/21/2023, 1:16:30 AM
+
+Both line #2 and line #3 will print the same result, which is the minimum
+integer value possible in C++.
+
+The difference between them lies in the fact that line #2 explicitly
+adds 1 to the maximum value of an integer (INT_MAX), which results in
+integer overflow. Integer overflow occurs when the result of an arithmetic
+operation exceeds the maximum value that can be represented by the data
+type used to store it. In this case, the result of INT_MAX + 1 overflows
+the range of a signed int data type and becomes the minimum value possible.
+
+On the other hand, line #3 implicitly overflows the integer value stored
+in the c variable by adding 1 to it. Since c is initialized with the
+maximum value an int can store (INT_MAX), adding 1 to it also overflows
+the integer value and gives the same result as line #2.
+
+
+
+
+6/21/2023, 1:19:18 AM
+
+will line #2 and #3 print different result. what's the diff btw them?
+
+why i got warning only on line #2 ?
+
+```
+    int c = INT_MAX;
+    std::cout << INT_MAX + 1  << "\n";   // line #2
+    std::cout << c + 1        << "\n";   // line #3
+```
+
+6/21/2023, 1:19:32 AM
+
+Both line #2 and line #3 will print the same result, which is the minimum
+integer value possible in C++.
+
+The warning you received only on line #2 is due to the fact that you are
+explicitly adding 1 to the maximum value of an integer (INT_MAX), which
+results in integer overflow. As a result, the behavior of your program
+is undefined. In other words, the result of INT_MAX + 1 can vary depending
+on the implementation.
+
+On the other hand, line #3 implicitly overflows the integer value stored
+in the c variable by adding 1 to it. Since c is initialized with the
+maximum value an int can store (INT_MAX), adding 1 to it also overflows
+the integer value and gives the same result as line #2. However, this
+overflow occurs during runtime and hence no warning is issued at compile-time.
+
+To avoid such warnings and undefined behavior caused by integer overflow,
+one should always ensure that their arithmetic operations do not cause
+numbers to exceed the range of the data type used to store them.
+
+
+
+
+6/21/2023, 1:21:59 AM
+
+though line #3 is not warned at compile-time, the behavior of both
+line #2 and #3 are the same, right
+
+6/21/2023, 1:22:08 AM
+
+Yes, that is correct.
+
+Although only line #2 produces a compile-time warning due to the explicit
+overflow, both lines of code ultimately result in an overflow and produce
+the same behavior at run-time. This is because adding 1 to c, which is
+set to INT_MAX, causes an overflow that results in the same value being
+printed as when you explicitly add 1 to INT_MAX in line #2.
+
+The behavior of both lines of code is undefined since integer overflow
+causes signed integer types to wrap around. In this case, the value
+INT_MAX + 1 wraps around to the smallest possible value of a signed integer,
+and adding 1 to INT_MAX also results in the same value, which is the
+smallest possible value of a signed integer. Therefore, it's important
+to always ensure that your arithmetic operations do not cause signed
+integers to wrap around by checking for potential overflow or by using
+appropriate data types with larger storage.
+
+
+---
+
+
+// struct literal, temporary,
+
+struct T{};
+(struct T){} = (struct T){};
+
+https://en.cppreference.com/w/c/language/value_category :
+compound literals, which look similar, are lvalues
+
+https://en.cppreference.com/w/c/language/compound_literal :
+The value category of a compound literal is lvalue (its address can be taken)
+
+
+---
+
+//https://en.cppreference.com/w/cpp/language/expressions#Literals
+//Literals are the tokens of a C++ program that represent constant values
+//embedded in the source code.
+
+//C: temporary struct is struct literal. it is constant.
+//C: can not change member data of temporary.
+//C++: temporary is object constructed by constructor.
+//C++: can not change member data of temporary.
+//C++: can not invoke builtin operator & on temporary.
+//C++: member functions and operators can be invoked on temporary objects.
+
+typedef struct T {
+    int num;
+} T;
+
+T f1()
+{
+    return (T){.num = 123,};
+}
+
+//lvalue reference requires const if argument is temporary
+void f2_accept_temp(const T &t)
+{
+}
+
+//rvalue reference
+void f3(T &&t)
+{
+}
+
+int main()
+{
+    //c: return value is struct literal
+    //f1() = f1(); //error: expression is not assignable
+    //f1().num++; //error: expression is not assignable
+    //T *p = &f1(); //error: cannot take the address of an rvalue of type 'T' (aka 'struct T')
+
+    //c++: return value is class/struct object
+    f1() = f1(); //ok, invoke member operator= of the class
+    //f1().num++; //error: expression is not assignable
+    //T *p = &f1(); //error: taking the address of a temporary object of type 'T' [-Waddress-of-temporary]
+
+    int n = f1().num;
+    T t = f1();
+
+    f2_accept_temp((T){});
+    f3((T){});
+
+    return 0;
+}
+
+---
+
+https://en.cppreference.com/w/c/language/lifetime
+
+Temporary lifetime
+Struct and union objects with array members (either direct or members of
+nested struct/union members) that are designated by non-lvalue expressions,
+have temporary lifetime. Temporary lifetime begins when the expression
+that refers to such object is evaluated and ends at
+the next sequence point (until C11)
+when the containing full expression or full declarator ends (since C11).
+
+Any attempt to modify an object with temporary lifetime results in undefined behavior.
+
+struct T { double a[4]; };
+struct T f(void) { return (struct T){3.15}; }
+double g1(double* x) { return *x; }
+void g2(double* x) { *x = 1.0; }
+
+int main(void)
+{
+    double d = g1(f().a); // C99: UB access to a[0] in g1 whose lifetime ended
+                          //      at the sequence point at the start of g1
+                          // C11: OK, d is 3.15
+    g2(f().a); // C99: UB modification of a[0] whose lifetime ended at the sequence point
+               // C11: UB attempt to modify a temporary object
+}
+
+---
