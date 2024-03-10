@@ -63,9 +63,6 @@
     "LD_LIBRARY_PATH": "/path/to/lib",
   },
   "http.proxySupport": "off",
-  "[Log]": {
-    "editor.fontSize": 12, // output same as terminal
-  },
   "outline.icons": false,
   "outline.showArrays": false,
   "outline.showBooleans": false,
@@ -101,6 +98,7 @@
   "vim.overrideCopy": false,
   "vim.wrapscan": false,
   "window.title": "${activeEditorLong}",
+  "window.zoomPerWindow": false,
   "workbench.editor.empty.hint": "hidden",
   "workbench.editor.enablePreview": false,
   "workbench.editor.showIcons": false,
@@ -109,4 +107,5 @@
   "workbench.settings.useSplitJSON": true,
   "workbench.startupEditor": "newUntitledFile",
   "workbench.tree.enableStickyScroll": false,
+
 }
