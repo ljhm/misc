@@ -41,9 +41,9 @@ string s4 = string(10, 'c');
 // if struct has more members than initializer,
 // or array has more elements than initializers,
 // the rest without initializers will be zero.
-char arr1[10] = {'a','b','c'}; // 
+char arr1[10] = {'a','b','c'}; //
 char arr2[10] = "abc";
-struct T{ int a; int b; int c; } t = {1}; // 
+struct T{ int a; int b; int c; } t = {1}; //
 
 
 ---
@@ -126,6 +126,10 @@ A character, a short integer, ..is converted to int;
 #include <iostream>
 
 int main() {
+
+  char c1 = toupper(std::string_view("abc")[0]);    //ok
+  char c2 = toupper(std::string("abc").c_str()[0]); //ok
+
   // Temporary of an temporary
   const char *a = (std::string("abc")).c_str(); //error
 
@@ -133,12 +137,13 @@ int main() {
   // lifetime of a temporary object may be extended by binding to
   // a const lvalue reference
   const std::string &b = std::string("abc");    //ok
-  const char *c = b.c_str();                    //ok
-  std::cout << c << "\n";
+  const char *c3 = b.c_str();                   //ok
+  std::cout << c3 << "\n";
 
   //or, use an intermediate temporary variable
   std::string tmp = std::string("abc");
   const char *p = tmp.c_str();
+
 }
 
 
@@ -307,8 +312,8 @@ value to be stored.
 
 - a variable can be modified only once within one single sequence point.
 
-- expressions like i = i + 1 which use and modify i but only modify it later 
-when it's reasonably easy to ensure that the final store of the final value 
+- expressions like i = i + 1 which use and modify i but only modify it later
+when it's reasonably easy to ensure that the final store of the final value
 (into i, in this case) doesn't interfere with the earlier accesses.
 
 
