@@ -113,9 +113,9 @@ Use an explicit cast on at least one of the operands to force long arithmetic:
 
     int a = INT_MAX;
     int b = INT_MAX; // or, long b = INT_MAX;
-	long int c = (long int)a * b;
-	long int d = ((long int)a) * b;
-	long int e = (1L * a) * b;
+    long int c = (long int)a * b;
+    long int d = ((long int)a) * b;
+    long int e = (1L * a) * b;
 
 
 ---
@@ -132,11 +132,11 @@ here is a ``careful'' addition function:
 int
 chkadd(int a, int b)
 {
-	if(INT_MAX - b < a) {
-		fputs("int overflow\n", stderr);
-		return INT_MAX;
-	}
-	return a + b;
+    if(INT_MAX - b < a) {
+        fputs("int overflow\n", stderr);
+        return INT_MAX;
+    }
+    return a + b;
 }
 
 Here is a complete set of three functions for ``careful''
@@ -150,39 +150,39 @@ various edge cases, such as the smallest negative integer, INT_MIN.)
 int
 chkadd(int a, int b)
 {
-	if(b < 0)
-		return chksub(a, -b);
-	if(INT_MAX - b < a) {
-		fputs("int overflow\n", stderr);
-		return INT_MAX;
-	}
-	return a + b;
+    if(b < 0)
+        return chksub(a, -b);
+    if(INT_MAX - b < a) {
+        fputs("int overflow\n", stderr);
+        return INT_MAX;
+    }
+    return a + b;
 }
 
 int
 chksub(int a, int b)
 {
-	if(b < 0)
-		return chkadd(a, -b);
-	if(INT_MIN + b > a) {
-		fputs("int underflow\n", stderr);
-		return INT_MIN;
-	}
-	return a - b;
+    if(b < 0)
+        return chkadd(a, -b);
+    if(INT_MIN + b > a) {
+        fputs("int underflow\n", stderr);
+        return INT_MIN;
+    }
+    return a - b;
 }
 
 int
 chkmul(int a, int b)
 {
-	int sign = 1;
-	if(a == 0 || b == 0) return 0;
-	if(a < 0) { a = -a; sign = -sign; }
-	if(b < 0) { b = -b; sign = -sign; }
-	if(INT_MAX / b < a) {
-		fputs("int overflow\n", stderr);
-		return (sign > 0) ? INT_MAX : INT_MIN;
-	}
-	return sign * a * b;
+    int sign = 1;
+    if(a == 0 || b == 0) return 0;
+    if(a < 0) { a = -a; sign = -sign; }
+    if(b < 0) { b = -b; sign = -sign; }
+    if(INT_MAX / b < a) {
+        fputs("int overflow\n", stderr);
+        return (sign > 0) ? INT_MAX : INT_MIN;
+    }
+    return sign * a * b;
 }
 
 
@@ -216,23 +216,22 @@ A character, a short integer, ..is converted to int;
 #include <iostream>
 
 int main() {
+    char c1 = toupper(std::string_view("abc")[0]);    //ok
+    char c2 = toupper(std::string("abc").c_str()[0]); //ok
 
-  char c1 = toupper(std::string_view("abc")[0]);    //ok
-  char c2 = toupper(std::string("abc").c_str()[0]); //ok
+    // Temporary of an temporary
+    const char *a = (std::string("abc")).c_str(); //error
 
-  // Temporary of an temporary
-  const char *a = (std::string("abc")).c_str(); //error
+    // https://en.cppreference.com/w/cpp/language/lifetime
+    // lifetime of a temporary object may be extended by binding to
+    // a const lvalue reference
+    const std::string &b = std::string("abc");    //ok
+    const char *c3 = b.c_str();                   //ok
+    std::cout << c3 << "\n";
 
-  // https://en.cppreference.com/w/cpp/language/lifetime
-  // lifetime of a temporary object may be extended by binding to
-  // a const lvalue reference
-  const std::string &b = std::string("abc");    //ok
-  const char *c3 = b.c_str();                   //ok
-  std::cout << c3 << "\n";
-
-  //or, use an intermediate temporary variable
-  std::string tmp = std::string("abc");
-  const char *p = tmp.c_str();
+    //or, use an intermediate temporary variable
+    std::string tmp = std::string("abc");
+    const char *p = tmp.c_str();
 
 }
 
@@ -399,11 +398,11 @@ when it's reasonably easy to ensure that the final store of the final value
 (into i, in this case) doesn't interfere with the earlier accesses.
 
 
-  i = i++;    // error
-  i++ * i++;  // error
-  i = i + 1;  // ok
-  i = i + 1;  // ok
-  i++ && i++; // ok
+    i = i++;    // error
+    i++ * i++;  // error
+    i = i + 1;  // ok
+    i = i + 1;  // ok
+    i++ && i++; // ok
 
 
 ---
@@ -417,7 +416,7 @@ appearances of the object which fetch its value participate in the
 computation of the new value which is stored.
 This rule allows the expression
 
-	i = i + 1
+    i = i + 1
 
 because although the object i appears twice and is modified,
 the appearance (on the right-hand side) which fetches i's old value
