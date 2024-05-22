@@ -121,6 +121,44 @@ Use an explicit cast on at least one of the operands to force long arithmetic:
 ---
 
 
+https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/n4950.pdf ,
+
+sec 6.8.2 :
+
+Note 2 : Unsigned arithmetic does not overflow.
+Overflow for signed arithmetic yields undefined behavior (7.1).
+
+// or, underflow and overflow is well defined in unsigned integers
+
+    auto x = UINT_MAX; // 4294967295
+    auto x2 = 5 - UINT_MAX; // 6
+    auto x3 = 5 - (long)UINT_MAX; // -4294967290
+
+// leetcode 58. Length of Last Word
+// https://leetcode.cn/problems/length-of-last-word/description/
+
+    #include <iostream>
+    #include <vector>
+    #include <string>
+    using namespace std;
+
+    int lengthOfLastWord(string s) {
+        auto a = s.find_last_not_of(' ');
+        auto b = s.find_last_of(' ', a);
+        return a - b;
+    }
+
+    int main() {
+        std::cout << lengthOfLastWord("hello") << "\n"; // 5 - string::npos == 6 // ?
+        // std::cout << lengthOfLastWord("hello guys") << "\n";
+        // std::cout << lengthOfLastWord(" hello c++ ") << "\n";
+        return 0;
+    }
+
+
+---
+
+
 https://c-faq.com/misc/intovf.html
 
 How can I ensure that integer arithmetic doesn't overflow?
@@ -421,44 +459,6 @@ This rule allows the expression
 because although the object i appears twice and is modified,
 the appearance (on the right-hand side) which fetches i's old value
 is used to compute i's new value.
-
-
----
-
-
-https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/n4950.pdf ,
-
-sec 6.8.2 :
-
-Note 2 : Unsigned arithmetic does not overflow.
-Overflow for signed arithmetic yields undefined behavior (7.1).
-
-// or, underflow and overflow is well defined in unsigned integers
-
-    auto x = UINT_MAX; // 4294967295
-    auto x2 = 5 - UINT_MAX; // 6
-    auto x3 = 5 - (long)UINT_MAX; // -4294967290
-
-// leetcode 58. Length of Last Word
-// https://leetcode.cn/problems/length-of-last-word/description/
-
-    #include <iostream>
-    #include <vector>
-    #include <string>
-    using namespace std;
-
-    int lengthOfLastWord(string s) {
-        auto a = s.find_last_not_of(' ');
-        auto b = s.find_last_of(' ', a);
-        return a - b;
-    }
-
-    int main() {
-        std::cout << lengthOfLastWord("hello") << "\n"; // 5 - string::npos == 6 // ?
-        // std::cout << lengthOfLastWord("hello guys") << "\n";
-        // std::cout << lengthOfLastWord(" hello c++ ") << "\n";
-        return 0;
-    }
 
 
 ---
