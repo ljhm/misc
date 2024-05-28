@@ -590,3 +590,37 @@ is used to compute i's new value.
 
 ---
 
+
+// 1. function argument pass by value
+// will not change the argument passed by caller
+void f1(int x){
+    x++;
+}
+
+// 2. function argument pass by const reference
+// (1) will not change the actual argument passed by caller
+void f2(const int &x){
+    // (2) can not change formal parameter declared as const too
+    // x++; // error: assign to const
+
+    auto y = x; // make a copy
+    y++; // ok
+}
+
+// 3. function argument pass by reference
+// will change the actual argument passed by caller
+void f3(int &x){
+    x++;
+}
+
+int main(){
+    int num = 10;
+    f1(num); // num is not changed
+    f2(num); // num is not changed
+    f3(num); // num is changed
+    return 0;
+}
+
+
+---
+
