@@ -624,3 +624,93 @@ int main(){
 
 ---
 
+
+https://en.cppreference.com/w/cpp/language/rule_of_three ,
+
+// rule of three / five /zero
+
+class rule_of_five
+{
+    char* cstring; // raw pointer used as a handle to a
+                   // dynamically-allocated memory block
+public:
+    explicit rule_of_five(const char* s = "") : cstring(nullptr)
+    {
+        if (s)
+        {
+            std::size_t n = std::strlen(s) + 1;
+            cstring = new char[n];      // allocate
+            std::memcpy(cstring, s, n); // populate
+        }
+    }
+
+    ~rule_of_five()
+    {
+        delete[] cstring; // deallocate
+    }
+
+    rule_of_five(const rule_of_five& other) // copy constructor
+        : rule_of_five(other.cstring) {}
+
+    rule_of_five(rule_of_five&& other) noexcept // move constructor
+        : cstring(std::exchange(other.cstring, nullptr)) {}
+
+    rule_of_five& operator=(const rule_of_five& other) // copy assignment
+    {
+        return *this = rule_of_five(other);
+    }
+
+    rule_of_five& operator=(rule_of_five&& other) noexcept // move assignment
+    {
+        std::swap(cstring, other.cstring);
+        return *this;
+    }
+
+// alternatively, replace both assignment operators with
+//  rule_of_five& operator=(rule_of_five other) noexcept
+//  {
+//      std::swap(cstring, other.cstring);
+//      return *this;
+//  }
+
+};
+
+
+/*
+
+notes:
+
+1. delegating constructor:
+
+    rule_of_five(rule_of_five&& other) noexcept // move constructor
+        : cstring(std::exchange(other.cstring, nullptr)) {}
+
+2. inside the copy assignment,
+   the move assignment is called on the temporary object:
+
+    rule_of_five& operator=(const rule_of_five& other) // copy assignment
+    {
+        return *this = rule_of_five(other);
+    }
+
+3. copy and swap:
+   pass arguments by value to function,
+   for the single value parameter, copy or move constructor is called.
+   it will call copy or move constructor instead of assignment operator.
+   assignment operator is for assigning a value to an existing variable.
+   constructor is for creating a new parameter object.
+
+   c++ primer 5th, 13.3: copy and swap.
+   c++ primer 5th, 13.1.1: parameters that have a nonreference type are copy initialized.
+
+    rule_of_five& operator=(rule_of_five other);
+
+    rule_of_five t1, t2;
+    t2 = t1;
+    t2 = std::move(t1);
+
+*/
+
+
+---
+
