@@ -714,3 +714,40 @@ notes:
 
 ---
 
+
+// c++11 rvalue reference, move operation semantics,
+// bind rvalue reference to element in container,
+// move element out of container,
+
+#include <iostream>
+#include <vector>
+#include <utility>
+
+void f(std::string &&s){
+    std::string t = std::move(s); // move
+}
+
+void f(std::string &s){ // ok too
+    std::string t = std::move(s); // move
+}
+
+int main() {
+    std::vector<std::string> v1 = {"hello", "world", "abc"};
+    auto elem = std::move(v1[0]); // 1. move
+    f(std::move(v1[1])); // 2. move
+    f(v1[2]); // 3. move
+
+    // ---
+
+    std::vector<std::string> v2 = {"hello", "world", "abc"};
+    std::vector<std::string> v3;
+    for (auto &&e : v2) {
+    // for (auto &e : v2) { // ok too
+        v3.emplace_back(std::move(e)); // 4. move
+    }
+
+    return 0;
+}
+
+
+---

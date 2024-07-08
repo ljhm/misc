@@ -1,69 +1,110 @@
 1. http://en.wikipedia.org/wiki/C++11
 
-A chronic performance problem with C++03 is the costly and unnecessary 
+A chronic performance problem with C++03 is the costly and unnecessary
 deep copies that can happen implicitly when objects are passed by value.
 
 ..
 
-Rvalue references can provide performance benefits to existing code 
+Rvalue references can provide performance benefits to existing code
 without needing to make any changes outside the standard library.
 
 ..
 
-For safety reasons, some restrictions are imposed. A named variable will 
-never be considered to be an rvalue even if it is declared as such; in 
-order to get an rvalue, the function template std::move() should be 
-used. 
+For safety reasons, some restrictions are imposed. A named variable will
+never be considered to be an rvalue even if it is declared as such; in
+order to get an rvalue, the function template std::move() should be
+used.
 
 ..
 
-Rvalue references can also be modified only under certain circumstances, 
+Rvalue references can also be modified only under certain circumstances,
 being intended to be used primarily with move constructors.
 
 
 2. http://stroustrup.com/C++11FAQ.html
 
-In the C++11 standard library, all containers are provided with move 
-constructors and move assignment and operations that insert new 
-elements, such as insert() and push_back() have versions that take 
-rvalue references. The net result is that the standard containers and 
-algorithms quietly - without user intervention - improve in performance 
+In the C++11 standard library, all containers are provided with move
+constructors and move assignment and operations that insert new
+elements, such as insert() and push_back() have versions that take
+rvalue references. The net result is that the standard containers and
+algorithms quietly - without user intervention - improve in performance
 because they copy less.
 
 ..
 
-Effects of move: Moving can be much more efficient than copying (see 
-Move semantics). For example, move-based std::sort() and 
-std::set::insert() has been measured to be 15 times faster than copy 
-based versions. This is less impressive than it sounds because such 
-standard library operations for standard library types, such as string 
-and vector, are usually hand-optimized to gain the effects of moving 
-through techniques such as replacing copies with optimized swaps. 
-However, if your type has a move operation, you gain the performance 
+Effects of move: Moving can be much more efficient than copying (see
+Move semantics). For example, move-based std::sort() and
+std::set::insert() has been measured to be 15 times faster than copy
+based versions. This is less impressive than it sounds because such
+standard library operations for standard library types, such as string
+and vector, are usually hand-optimized to gain the effects of moving
+through techniques such as replacing copies with optimized swaps.
+However, if your type has a move operation, you gain the performance
 benefits automatically from the standard algorithms.
 
 ..
 
-Move operators: Containers now have move constructors and move 
-assignments (in addition to the traditional copy operations). The most 
-important implication of this is that we can efficiently return a 
+Move operators: Containers now have move constructors and move
+assignments (in addition to the traditional copy operations). The most
+important implication of this is that we can efficiently return a
 container from a function:
 
-The point here is that no vectors are copied. Rewrite this to return a 
-free-store-allocated vector and you have to deal with memory management. 
-Rewrite this to pass the vector to be filled as an argument to 
-make_random() and you have a far less obvious code (plus an added 
+The point here is that no vectors are copied. Rewrite this to return a
+free-store-allocated vector and you have to deal with memory management.
+Rewrite this to pass the vector to be filled as an argument to
+make_random() and you have a far less obvious code (plus an added
 opportunity for making an error).
 
 ..
 
-There is a push_back version that takes an rvalue reference argument so 
-that we can take advantage of string's move constructor. Note also the 
+There is a push_back version that takes an rvalue reference argument so
+that we can take advantage of string's move constructor. Note also the
 use of the unified initializer syntax to avoid verbosity.
 
 
 3. http://stroustrup.com/bs_faq2.html
 
-The standard containers hold copies of values, and copy a value when you 
-put it into the container. This is essentially unbeatable for small 
+The standard containers hold copies of values, and copy a value when you
+put it into the container. This is essentially unbeatable for small
 values, but can be quite unsuitable for huge objects
+
+
+---
+
+
+// c++11 rvalue reference, move operation semantics,
+// bind rvalue reference to element in container,
+// move element out of container,
+
+#include <iostream>
+#include <vector>
+#include <utility>
+
+void f(std::string &&s){
+    std::string t = std::move(s); // move
+}
+
+void f(std::string &s){ // ok too
+    std::string t = std::move(s); // move
+}
+
+int main() {
+    std::vector<std::string> v1 = {"hello", "world", "abc"};
+    auto elem = std::move(v1[0]); // 1. move
+    f(std::move(v1[1])); // 2. move
+    f(v1[2]); // 3. move
+
+    // ---
+
+    std::vector<std::string> v2 = {"hello", "world", "abc"};
+    std::vector<std::string> v3;
+    for (auto &&e : v2) {
+    // for (auto &e : v2) { // ok too
+        v3.emplace_back(std::move(e)); // 4. move
+    }
+
+    return 0;
+}
+
+
+---
