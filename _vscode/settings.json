@@ -18,10 +18,11 @@
   ],
   "clangd.fallbackFlags": [
     "-std=c++2a",
-    "-I../foo",
+    "-I${workspaceFolder}/src/foo",
 
   ],
   "clangd.semanticHighlighting": false,
+  "debug.internalConsoleOptions": "neverOpen",
   "debug.onTaskErrors": "showErrors",
   "debug.showBreakpointsInOverviewRuler": true,
   "diffEditor.maxComputationTime": 0,
@@ -111,6 +112,7 @@
   "vim.hlsearch": true,
   "vim.overrideCopy": false,
   "vim.wrapscan": false,
+  "window.autoDetectColorScheme": true,
   "window.title": "${activeEditorLong}",
   "window.zoomPerWindow": false,
   "workbench.editor.empty.hint": "hidden",
