@@ -19,7 +19,6 @@
   "clangd.fallbackFlags": [
     "-std=c++2a",
     "-I${workspaceFolder}/src/foo",
-
   ],
   "clangd.semanticHighlighting": false,
   "debug.internalConsoleOptions": "neverOpen",
@@ -68,6 +67,7 @@
   "go.testExplorer.enable": false,
   "go.toolsEnvVars": {
     "LD_LIBRARY_PATH": "/path/to/lib",
+    "DYLD_LIBRARY_PATH": "/path/to/lib",
   },
   "http.proxySupport": "off",
   "lldb.evaluateForHovers": false,
