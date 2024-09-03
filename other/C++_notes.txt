@@ -120,10 +120,10 @@ int main()
 
 https://c-faq.com/expr/intoverflow1.html
 
-int a = INT_MAX;
-int b = INT_MAX;
-long int c = a * b; // error
-long int c = (long int)(a * b); // error, conversion, it happens too late
+    int a = INT_MAX;
+    int b = INT_MAX;
+    long int c = a * b; // error
+    long int c = (long int)(a * b); // error, conversion, it happens too late
 
 Under C's integral promotion rules, the multiplication is carried out
 using int arithmetic, and the result may overflow or be truncated before
@@ -132,8 +132,8 @@ Use an explicit cast on at least one of the operands to force long arithmetic:
 
     int a = INT_MAX;
     int b = INT_MAX; // or, long b = INT_MAX;
-    long int c = (long int)a * b;
-    long int d = ((long int)a) * b;
+    long int c = (long int)a * b; // ok, explicit type conversion on operand
+    long int d = ((long int)a) * b; // ok, explicit type conversion on operand
     long int e = (1L * a) * b;
 
 
@@ -987,6 +987,77 @@ Guarantees that a variable is initialized at compile time
 but does not enforce that it is immutable.
 It can be modified after initialization, unlike const.
 unlike constexpr, it does not require the variable to be truly constant throughout its lifetime.
+
+
+---
+
+
+```
+  {
+    std::vector v = {0};
+    auto i = begin(v) + v.size(); // 1. narrowing
+  }
+
+  {
+    std::vector v = {0};
+    auto i = 0;
+    i = v.size(); // 2. narrowing
+  }
+
+  {
+    std::vector v = {0};
+    if (auto i = 0; i == v.size()) { // 3. ok
+      ;
+    }
+  }
+```
+
+in above c++ code:
+
+1. why ` begin(v) + v.size() ` causes narrowing static check?
+  because iterator arithmetic requires an operand of long or int,
+  while v.size() is unsigned long which is larger than long or int, right?
+
+2. why `i=v.size()` causes narrowing check?
+  because in assignment, the value at right if converted to the type of the value at left,
+  v.size() is unsigned long and is larger one, the i on left is int, right?
+
+3. why `i==v.size()` does not cause narrowing check?
+  because operators like `==` promotes the smaller value to the type of the large value, right?
+
+in c,c++, are the following correct?
+
+K&R C 2.7:
+
+- in assignment, value on right is converted to type of the value at left;
+- in function call, actual arguments are converted to formal parameter type of the function;
+- in other binary operators which take multiple operands of different types,
+  like *, /, %, +, -, the narrower operand is promoted to the type of
+  the wider operand without losing information.
+
+  this is the automatic implicit arithmetic conversions,
+  lower type is converted higher type.
+
+- all integral smaller than int are converted to int before arithmetic operation takes place.
+
+K&R C, A.6.1 Integral Promotion:
+
+- A character, a short integer, ..is converted to int;
+
+  (then long int, long long int, they are all int)
+
+K&R C 4.1:
+
+- in function return, return value is converted to return type of the function;
+
+
+https://c-faq.com/expr/intoverflow1.html
+
+arithmetic operation is performed under using int arithmetic,
+explicitly convert individual operand larger than int to larger type.
+
+  long int c = (long int)(a * b); // error, conversion, it happens too late
+  long int c = (long int)a * b; // ok, explicit type conversion on operand
 
 
 ---
