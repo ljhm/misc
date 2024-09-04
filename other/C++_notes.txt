@@ -213,98 +213,6 @@ Overflow for signed arithmetic yields undefined behavior (7.1).
 ---
 
 
-chatGPT:
-Unsigned integers in C and C++ indeed behave like a circle or a clock face.
-
-When you increment an unsigned integer beyond its maximum value (UINT_MAX),
-it wraps around to 0, which is the smallest value.
-This is because unsigned arithmetic is performed modulo 2^n,
-where n is the number of bits in the unsigned integer type.
-
-Similarly, when you decrement an unsigned integer below 0,
-it wraps around to UINT_MAX, which is the largest value.
-
-This behavior is often referred to as "overflow" or "wraparound",
-and it's a fundamental property of unsigned arithmetic in C and C++.
-
-The diagram you provided illustrates this concept nicely,
-with the unsigned integer values forming a circular sequence,
-where incrementing beyond the maximum value brings you back to the minimum value,
-and decrementing below the minimum value brings you back to the maximum value.
-
-So, yes, you can think of unsigned integers as a circle or a clock face,
-where the values wrap around seamlessly from maximum to minimum and vice versa.
-
-
----
-
-
-chatGPT:
-In C and C++, unsigned integers follow modular arithmetic rules,
-which means they "wrap around" when they exceed the maximum value that
-can be represented by the data type.
-
-When you increment an unsigned integer beyond its maximum value (UINT_MAX),
-it wraps around to 0. Similarly, when you decrement an unsigned integer below 0,
-it wraps around to UINT_MAX. This behavior is akin to a clock face or a circle,
-where the values loop back around when they reach the limits.
-
-For example, in an 8-bit unsigned integer, the maximum value is 255 (2^8 - 1).
-If you increment 255 by 1, it wraps around to 0. If you decrement 0 by 1,
-it wraps around to 255.
-
-This behavior is useful in scenarios where you want to ensure that
-arithmetic operations on unsigned integers never result in undefined behavior
-due to overflow.
-Instead, the values "wrap around" in a predictable manner within the
-range of the data type.
-
-
----
-
-
-// c,c++, unsigned, wrap around, module, 模运算,
-
-chatGPT:
-在C和C++中, 对于无符号整数类型的运算, 整数溢出是定义行为.
-因此, 表达式 `5 - UINT_MAX` 的结果是确定的.
-
-由于 `UINT_MAX` 是无符号整数类型的最大值, 它的值是一个特定的常量,
-例如在C中定义为 `4294967295`, 即 2^32-1 .
-在这种情况下, 表达式 `5 - UINT_MAX` 将进行无符号整数的减法运算.
-
-根据无符号整数的算术运算规则, 当减法运算结果小于零时, 会对无符号整数类型的范围进行循环.
-具体来说, 当 `5 - UINT_MAX` 计算时, 结果将是一个正整数, 等于 `6` .
-
-因此, 表达式 `5 - UINT_MAX` 的值是确定的, 并且在C和C++中是合法可移植的. 请注意,
-这个结果是基于对无符号整数类型的特定规则进行推断的.
-如果涉及到其他类型的操作数或混合类型的运算, 结果可能会有所不同.
-
-chatGPT:
-In C and C++, for operations involving unsigned integer types,
-integer overflow is defined behavior.
-Therefore, the result of the expression `5 - UINT_MAX` is well-defined.
-
-Since `UINT_MAX` is the maximum value for an unsigned integer type,
-it has a specific value, such as `4294967295` in C 2^32-1.
-In this case, the expression `5 - UINT_MAX` will
-undergo subtraction with unsigned integers.
-
-According to the arithmetic rules for unsigned integers, when the result
-of a subtraction operation is negative, it wraps around within the range
-of the unsigned integer type. Specifically, when computing `5 - UINT_MAX`,
-the result will be a positive integer, equal to `6`.
-
-Therefore, the value of the expression `5 - UINT_MAX` is well-defined
-and is legally portable in C and C++. It is important to note that this
-result is based on specific rules for unsigned integer types.
-Results may differ if other types of operands are involved or if
-mixed-type operations are performed.
-
-
----
-
-
 https://c-faq.com/misc/intovf.html
 
 How can I ensure that integer arithmetic doesn't overflow?
@@ -440,33 +348,6 @@ compound literals, which look similar, are lvalues
 
 https://en.cppreference.com/w/c/language/compound_literal :
 The value category of a compound literal is lvalue (its address can be taken)
-
-
----
-
-
-chatGPT:
-
-In both C99 and C11, compound literals are assignable.
-
-According to the C99 and C11 standards, section 6.5.16.1, "The result of
-the compound literal is an lvalue." This means that the compound literal
-can be assigned to a variable or used as the operand of an assignment
-operator.
-
-Here is an example of assigning a compound literal to a variable in C:
-
-int *p = (int []){1, 2, 3};
-
-
-In this example, the compound literal (int []){1, 2, 3} creates an array
-of integers with the values 1, 2, and 3. The array is then assigned to
-the pointer variable p.
-
-Therefore, the answer to your question is yes, compound literals in C
-are assignable.
-
-If you have any further questions, feel free to ask.
 
 
 ---
@@ -1112,11 +993,8 @@ int main() {
 // typeid(var).name()
 // typeid(int).name()
 
----
-
 #include <cxxabi.h>
 #include <typeinfo>
-
 
 template <typename T> std::string demangle(const T &t) {
   int status = 0;
@@ -1126,26 +1004,30 @@ template <typename T> std::string demangle(const T &t) {
   return (status == 0) ? res.get() : name;
 }
 
+#define TYPENAME(t) (std::string(#t) + ": " + typeid(t).name())
 
-int main() {
-    auto a1 = std::string::npos;
-    auto a2 = typeid(a1).name(); // m
-    auto a3 = demangle(a1); // unsigned long
-    return 0;
+int main2() {
+  std::cout << TYPENAME(void) << ";\n";
+  std::cout << TYPENAME(char) << ", \t" << TYPENAME(unsigned char) << ";\n";
+  std::cout << TYPENAME(short) << ", \t" << TYPENAME(unsigned short) << ";\n";
+  std::cout << TYPENAME(int) << ", \t" << TYPENAME(unsigned int) << ";\n";
+  std::cout << TYPENAME(long) << ", \t" << TYPENAME(unsigned long) << ";\n";
+  std::cout << TYPENAME(long long) << ", \t" << TYPENAME(unsigned long long) << ";\n";
+  std::cout << TYPENAME(float) << ", \t" << TYPENAME(double) << ", \t" << TYPENAME(long double) << ";\n";
+  std::cout << TYPENAME(char *) << ", \t" << TYPENAME(char[]) << ";\n";
+
+  return 0;
 }
 
 
----
-
-
-  //     *void: v;
-  //      char: c;      unsigned char: h;
-  //     short: s;     unsigned short: t;
-  //       int: i;       unsigned int: j;
-  //      long: l;      unsigned long: m;
-  // long long: x; unsigned long long: y;
-  //     float: f;             double: d;    long double: e;
-  //  char [] : A_c;          char * : Pc; const char * : PKc;
+// void: v;
+// char: c,        unsigned char: h;
+// short: s,       unsigned short: t;
+// int: i,         unsigned int: j;
+// long: l,        unsigned long: m;
+// long long: x,   unsigned long long: y;
+// float: f,       double: d,      long double: e;
+// char *: Pc,     char[]: A_c;
 
 
 ---
