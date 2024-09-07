@@ -1,18 +1,24 @@
+<pre>
 
-// c/c++ source file
+
+// c,c++ source code file:
+// the source file translation unit is composed of declarations,
+// 1. there can only be declarations in top level file scope:
+//      function declaration, variable declaration, type declaration, etc.
+// 2. statements can occur inside function.
 
 source file:
-declarations
-type declaration
-variable declaration //global
-function declaration
+declarations:
+type declaration,
+variable declaration, // global
+function declaration,
 
 function:
-variable declaration //local
-statements
-expressions statement
-control statement
-assignment statement
+variable declaration, // local
+statements:
+expressions statement,
+control statement,
+assignment statement,
 
 
 ---
@@ -37,32 +43,32 @@ clean : ; -rm -fr *.o *.d main
 ---
 
 
-// c/c++ initialization
+// c,c++ initialization
 
-//  =  for initialization (and assignment): basic types
-//char, int, float, double, pointers, array element and structure
-//assignment
+// =  for initialization (and assignment):
+// basic types: char, int, float, double, pointers.
 int n = 123;
 
-//  {}  for initialization: array, structure, c++ vector
+// {}  for initialization:
+// array, structure, c++ initializer_list,
 int a1[10] = {0};
-int a2[] = “hello”; //a2 with nul
+int a2[] = “hello”; //a2 with nul,
 struct point {int x,y} pt = {10, 20};
 vector<string> articles = {"a", "an", "the"};
 
-//  ()  for initialization: c++ class type
-//library string without nul, string::c_str() with nul
-string s1("hello");
-string s2 = "hello";
+// ()  for initialization:
+// c++ class constructor.
+string s1("hello"); // library string without nul.
+string s2 = "hello"; //string::c_str() with nul.
 string s3(10, 'c');
 string s4 = string(10, 'c');
 
-// if struct has more members than initializer,
+// if struct has more members than initializers,
 // or array has more elements than initializers,
 // the rest without initializers will be zero.
-char arr1[10] = {'a','b','c'}; //
+char arr1[10] = {'a','b','c'};
 char arr2[10] = "abc";
-struct T{ int a; int b; int c; } t = {1}; //
+struct T{ int a; int b; int c; } t = {1};
 
 
 ---
@@ -70,55 +76,19 @@ struct T{ int a; int b; int c; } t = {1}; //
 
 // string and array
 
-/* const*/ char *ptr = "hello"; // pointer const string literal
-// *ptr = 'H'; // error
-// ptr[0] = 'H'; // error
+/* const*/ char *ptr = "hello"; // pointer to const string literal
+// *ptr = 'H';   // error, immutable,
+// ptr[0] = 'H'; // error, immutable,
 
-char arr[] = "hello";
-*ar = 'H'; //ok
-arr[0] = 'H'; //ok
-
-
----
-
-
-// integral promotion
-
-#include <iostream>
-#include <climits>
-
-int main()
-{
-    unsigned char       a = UCHAR_MAX;
-    unsigned short      b = USHRT_MAX;
-    int                 c = INT_MAX;
-    unsigned int        d = UINT_MAX;
-    unsigned long       e = ULONG_MAX;
-    unsigned long long  f = ULLONG_MAX;
-
-    std::cout << UCHAR_MAX  << "\t: " << UCHAR_MAX + 1  << "\n";
-    std::cout << USHRT_MAX  << "\t: " << USHRT_MAX + 1  << "\n";
-    std::cout << INT_MAX    << "\t: " << INT_MAX + 1  << "\n"; // overflow
-    std::cout << UINT_MAX   << "\t: " << UINT_MAX + 1  << "\n";
-    std::cout << ULONG_MAX  << "\t: " << ULONG_MAX + 1  << "\n";
-    std::cout << ULLONG_MAX << "\t: " << ULLONG_MAX + 1  << "\n";
-
-    std::cout << '\n';
-
-    std::cout << a  << "\t: " << a + 1  << "\n";
-    std::cout << b  << "\t: " << b + 1  << "\n";
-    std::cout << c  << "\t: " << c + 1  << "\n";
-    std::cout << d  << "\t: " << d + 1  << "\n";
-    std::cout << e  << "\t: " << e + 1  << "\n";
-    std::cout << f  << "\t: " << f + 1  << "\n";
-
-}
+char arr[] = "hello"; // assign string literal to built-in array.
+*arr = 'H';   // ok
+arr[0] = 'H'; // ok
 
 
 ---
 
 
-https://c-faq.com/expr/intoverflow1.html
+https://c-faq.com/expr/intoverflow1.html, 3.14,
 
     int a = INT_MAX;
     int b = INT_MAX;
@@ -140,6 +110,7 @@ Use an explicit cast on at least one of the operands to force long arithmetic:
 ---
 
 
+https://www.open-std.org/jtc1/sc22/wg21/docs/standards ,
 https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/n4950.pdf ,
 
 sec 6.8.2 :
@@ -154,7 +125,7 @@ Overflow for signed arithmetic yields undefined behavior (7.1).
     auto x3 = 5 - (long)UINT_MAX; // -4294967290
 
 // leetcode 58. Length of Last Word
-// https://leetcode.cn/problems/length-of-last-word/description/
+// https://leetcode.cn/problems/length-of-last-word/description ,
 
     #include <iostream>
     #include <vector>
@@ -213,7 +184,8 @@ Overflow for signed arithmetic yields undefined behavior (7.1).
 ---
 
 
-https://c-faq.com/misc/intovf.html
+https://c-faq.com/misc/intovf.html, 20.6b,
+https://c-faq.com/misc/sd26.html,
 
 How can I ensure that integer arithmetic doesn't overflow?
 
@@ -281,7 +253,7 @@ chkmul(int a, int b)
 ---
 
 
-// https://en.cppreference.com/w/cpp/language/implicit_conversion
+// https://en.cppreference.com/w/cpp/language/implicit_conversion ,
 
 prvalues of small integral types (such as char) may be converted to
 prvalues of larger integral types (such as int).
@@ -318,10 +290,10 @@ int main() {
     char c1 = toupper(std::string_view("abc")[0]);    //ok
     char c2 = toupper(std::string("abc").c_str()[0]); //ok
 
-    // Temporary of an temporary
+    // temporary of an temporary
     const char *a = (std::string("abc")).c_str(); //error
 
-    // https://en.cppreference.com/w/cpp/language/lifetime
+    // https://en.cppreference.com/w/cpp/language/lifetime ,
     // lifetime of a temporary object may be extended by binding to
     // a const lvalue reference
     const std::string &b = std::string("abc");    //ok
@@ -343,17 +315,17 @@ int main() {
 struct T{};
 (struct T){} = (struct T){};
 
-https://en.cppreference.com/w/c/language/value_category :
+https://en.cppreference.com/w/c/language/value_category ,
 compound literals, which look similar, are lvalues
 
-https://en.cppreference.com/w/c/language/compound_literal :
+https://en.cppreference.com/w/c/language/compound_literal ,
 The value category of a compound literal is lvalue (its address can be taken)
 
 
 ---
 
 
-//https://en.cppreference.com/w/cpp/language/expressions#Literals
+//https://en.cppreference.com/w/cpp/language/expressions#Literals ,
 //Literals are the tokens of a C++ program that represent constant values
 //embedded in the source code.
 
@@ -408,7 +380,7 @@ int main()
 ---
 
 
-https://en.cppreference.com/w/c/language/lifetime
+https://en.cppreference.com/w/c/language/lifetime ,
 
 Temporary lifetime
 Struct and union objects with array members (either direct or members of
@@ -453,7 +425,7 @@ $ 7.12.1, C A reference manual, 5th
 ---
 
 
-// https://c-faq.com/expr/seqpoints.html
+https://c-faq.com/expr/seqpoints.html, 3.8,
 
 Between the previous and next sequence point an object shall have its
 stored value modified at most once by the evaluation of an expression.
@@ -470,7 +442,7 @@ when it's reasonably easy to ensure that the final store of the final value
 (into i, in this case) doesn't interfere with the earlier accesses.
 
 
-    i = i++;    // error
+    i = i++;    // error, increment its value on the right side, then assign it.
     i++ * i++;  // error
     i = i + 1;  // ok
     i = i + 1;  // ok
@@ -480,7 +452,7 @@ when it's reasonably easy to ensure that the final store of the final value
 ---
 
 
-https://c-faq.com/expr/confused.html
+https://c-faq.com/expr/confused.html, 3.11,
 
 If an object (as defined above) appears more than once in an expression,
 and is the object modified in the expression, make sure that all
@@ -488,7 +460,9 @@ appearances of the object which fetch its value participate in the
 computation of the new value which is stored.
 This rule allows the expression
 
-    i = i + 1
+    i = i++;    // error, increment its value on the right side, then assign it.
+
+    i = i + 1 ; // only fetch its value on the right side, then assign it.
 
 because although the object i appears twice and is modified,
 the appearance (on the right-hand side) which fetches i's old value
@@ -610,11 +584,11 @@ notes:
    c++ primer 5th, 13.3: copy and swap.
    c++ primer 5th, 13.1.1: parameters that have a nonreference type are copy initialized.
 
-    rule_of_five& operator=(rule_of_five other);
+   rule_of_five& operator=(rule_of_five other);
 
-    rule_of_five t1, t2;
-    t2 = t1;
-    t2 = std::move(t1);
+   rule_of_five t1, t2;
+   t2 = t1;
+   t2 = std::move(t1);
 
 */
 
@@ -657,92 +631,6 @@ int main() {
 }
 
 
----
-
-
-// find possible multiple occurences of substring in a range
-// in a larger string in c++.
-
-
-int main() {
-  // std::string haystack = "abaCabaCabaCaba";
-  // std::string needle = "aba";
-
-  std::string haystack = "abababababababa";
-  std::string needle = "aba";
-
-  const auto first = 1; // 0;                              // 1;
-  const auto last = 13; // end(haystack) - begin(haystack); // 13;
-
-  for (auto i = begin(haystack) + first, j = begin(haystack) + last; i != j;) {
-    if (auto k = search(i, j, begin(needle), end(needle)); k != j) {
-      std::cout << k - begin(haystack) << ",";
-      i = end(needle) - begin(needle) + k;
-    } else {
-      i++;
-    }
-  }
-  std::cout << "\n";
-  return 0;
-}
-
-
-/*
-abaCabaCabaCaba, sub: aba
-0,4,8,12,
-4,8,
-
-abababababababa, sub: aba
-0,4,8,12,
-2,6,10,
-*/
-
-
-// 1. the substring needle could contain more than one characters,
-//     this eliminates the std::string::find_first_of, std::find_first_of,
-//     because both can search for one single character from a set in a larger string.
-
-// 2. i need to search in a range in the larger string for a substring,
-//     this eliminates the std::string::find, because it has no way to specify that range.
-
-// 3. std::search is the only way which can fulfill the requirement.
-
-
-//---
-
-
-/*
-std::string s = "aaaaabaaaaab";
-std::string sub = "aaaaa";
-std::search_n(std::begin(s), std::end(s), 5, 'a');
-std::search(std::begin(s), std::end(s), begin(sub), end(sub));
-*/
-
-int main() {
-  std::string str = "aaaaabaaaaab";
-  std::string sub = "aaaaa"; // 5, 'a'
-  constexpr int len = 5;
-
-  for (auto i = begin(str); i != end(str); i++) {
-    auto j = search_n(i, end(str), len, 'a');
-    if (j != end(str)) {
-      std::cout << __LINE__ << ": " << j - begin(str) << "\n";
-      i = j;
-    }
-  }
-
-  for (auto i = begin(str); i != end(str); i++) {
-    auto j = search(i, end(str), begin(sub), end(sub));
-    if (j != end(str)) {
-      std::cout << __LINE__ << ": " << j - begin(str) << "\n";
-      i = j;
-    }
-  }
-
-  return 0;
-}
-
-
 //---
 
 
@@ -770,7 +658,7 @@ int main() {
 // return an iterator that points to the next element in the underlying
 // container (which means the original element before the reverse iteration).
 
-int main22() {
+int main2() {
   std::vector<int> vec = {1, 2, 3, 4, 5};
   auto rev_it = vec.rbegin() + 2;
   std::cout << *rev_it << "\n"; // 3
@@ -808,6 +696,102 @@ int main22() {
 //---
 
 
+#include <iostream>
+#include <string>
+#include <vector>
+
+int main() {
+
+
+  {
+    // 1. std::string.find(),
+    // search for substring in specified range in a larger string,
+
+    std::string haystack = "abaCabaCabaCaba";
+    std::string needle = "aba";
+
+    // std::string haystack = "abababababababa";
+    // std::string needle = "aba";
+
+    const size_t first = 1; // 0;                              // 1;
+    const size_t last = 11; // end(haystack) - begin(haystack); // 11;
+
+    std::cout << __LINE__ << ": ";
+    for (size_t i = first; i != size(haystack);) {
+      i = haystack.find(needle, i);
+      if (i == std::string::npos || i + size(needle) > last) {
+        break;
+      }
+      std::cout << i << ", ";
+      i += size(needle);
+    }
+    std::cout << "\n";
+  }
+
+
+  {
+    // 2. string, std::search(),
+    // search for substring in specified range in a larger string,
+
+    std::string haystack = "abaCabaCabaCaba";
+    std::string needle = "aba";
+
+    // std::string haystack = "abababababababa";
+    // std::string needle = "aba";
+
+    const size_t first = 1; // 0;                              // 1;
+    const size_t last = 11; // end(haystack) - begin(haystack); // 11;
+
+    std::cout << __LINE__ << ": ";
+    for (auto i = begin(haystack) + first, j = begin(haystack) + last;
+         i != j;) {
+      if (auto k = search(i, j, begin(needle), end(needle)); k != j) {
+        std::cout << k - begin(haystack) << ", ";
+        i = end(needle) - begin(needle) + k;
+      } else {
+        i++;
+      }
+    }
+    std::cout << "\n";
+  }
+
+
+  {
+    // 3. string, std::search(),
+    // search for sub sequence in specified range in a larger sequence,
+
+    // "abaCabaCabaCaba"
+    std::vector haystack = {'a', 'b', 'a', 'C', 'a', 'b', 'a', 'C',
+                            'a', 'b', 'a', 'C', 'a', 'b', 'a'};
+    // "aba";
+    std::vector needle = {'a', 'b', 'a'};
+
+    // std::string haystack = "abababababababa";
+    // std::string needle = "aba";
+
+    const size_t first = 1; // 0;                              // 1;
+    const size_t last = 11; // end(haystack) - begin(haystack); // 11;
+
+    std::cout << __LINE__ << ": ";
+    for (auto i = begin(haystack) + first, j = begin(haystack) + last;
+         i != j;) {
+      if (auto k = search(i, j, begin(needle), end(needle)); k != j) {
+        std::cout << k - begin(haystack) << ", ";
+        i = end(needle) - begin(needle) + k;
+      } else {
+        i++;
+      }
+    }
+    std::cout << "\n";
+  }
+
+  return 0;
+}
+
+
+//---
+
+
 // cppreference.com, html-book-20240610/reference/en/cpp/algorithm/search_n.html:
 
 template<class Container, class Size, class T>
@@ -836,24 +820,28 @@ int main()
     assert(it == nums.begin());
 }
 
-1. because the consecutive_values is constexpr so static_assert can be used on the call to consecutive_values,
-because sequence is constexpr so consecutive_values can be constexpr,
+1. because the consecutive_values is constexpr so static_assert can be
+used on the call to consecutive_values, because sequence is constexpr so
+consecutive_values can be constexpr,
 
-2. if the input sequence data is from user input at runtime, then sequence can not be constexpr,
-and consecutive_values can not be constexpr, and static_assert can not be used on the call to consecutive_values,
+2. if the input sequence data is from user input at runtime,
+then sequence can not be constexpr, and consecutive_values can not be constexpr,
+and static_assert can not be used on the call to consecutive_values,
+
 
 ---
+
 
 assert from the cassert will be ignored when NDEBUG is defined.
 static_assert can not be ignored, and it works at compile time when writing the program.
 static_assert evaluates expression at compile-time.
 
----
-
 value qualified with keyword const does not meet the requirement of compile time evaluation.
 value qualified with keyword constexpr, consteval do meet the requirement of compile time evaluation.
 
+
 ---
+
 
 const:
 Indicates that a variable's value cannot be modified after its initialization.
@@ -879,41 +867,6 @@ unlike constexpr, it does not require the variable to be truly constant througho
 
 ---
 
-
-```
-  {
-    std::vector v = {0};
-    auto i = begin(v) + v.size(); // 1. narrowing
-  }
-
-  {
-    std::vector v = {0};
-    auto i = 0;
-    i = v.size(); // 2. narrowing
-  }
-
-  {
-    std::vector v = {0};
-    if (auto i = 0; i == v.size()) { // 3. ok
-      ;
-    }
-  }
-```
-
-in above c++ code:
-
-1. why ` begin(v) + v.size() ` causes narrowing static check?
-  because iterator arithmetic requires an operand of long or int,
-  while v.size() is unsigned long which is larger than long or int, right?
-
-2. why `i=v.size()` causes narrowing check?
-  because in assignment, the value at right if converted to the type of the value at left,
-  v.size() is unsigned long and is larger one, the i on left is int, right?
-
-3. why `i==v.size()` does not cause narrowing check?
-  because operators like `==` promotes the smaller value to the type of the large value, right?
-
-in c,c++, are the following correct?
 
 K&R C 2.7:
 
@@ -947,7 +900,7 @@ K&R C 4.1:
 - in function return, return value is converted to return type of the function;
 
 
-c-faq, 3.11, https://c-faq.com/expr/intoverflow1.html
+https://c-faq.com/expr/intoverflow1.html, 3.14,
 
 arithmetic operation is performed under using int arithmetic,
 explicitly convert individual operand larger than int to larger type.
@@ -962,7 +915,6 @@ int main() {
   int powSqrt = pow(sqrtMax, 2); // 2147395600;
   long int longMax = LONG_MAX;   // 9223372036854775807;
 
-  // the point of c-faq 3.11 is:
   // operands a and b are both valid int,
   // but expression a * b may exceed int,
   // explicitly convert a operand to higer long int,
@@ -1032,3 +984,40 @@ int main2() {
 
 ---
 
+
+// bit operation manipulation
+
+#include <iostream>
+#include <string>
+
+int main() {
+  auto FLAG = 0b001;
+  auto x = 0b1011;
+
+  // 1. test or check a bit against FLAG
+  auto b = (x & FLAG) == FLAG;
+  std::cout << __LINE__ << ": " << b << "\n";
+  x = 0b1010;
+  b = (x & FLAG) == FLAG;
+  std::cout << __LINE__ << ": " << b << "\n";
+
+  // 2. set a bit in FLAG
+  x = 0b1010;
+  std::cout << __LINE__ << ": " << std::bitset<4>(x) << "\n";
+
+  x |= FLAG;
+  std::cout << __LINE__ << ": " << std::bitset<4>(x) << "\n";
+
+  // 3. clear or unset a bit in FLAG
+  x = 0b1011;
+  x &= ~FLAG;
+  std::cout << __LINE__ << ": " << std::bitset<4>(x) << "\n";
+
+  return 0;
+}
+
+
+---
+
+
+</pre>
