@@ -703,7 +703,7 @@ int main2() {
 int main() {
 
   {
-    // 1. string.find(),
+    // 1. std::string::find(),
     // search for substring in specified range in a larger string,
 
     std::string haystack = "abaCabaCabaCaba";
@@ -716,13 +716,9 @@ int main() {
     const size_t last = 11; // end(haystack) - begin(haystack); // 11;
 
     std::cout << __LINE__ << ": ";
-    for (size_t i = first, j = last; i != j;) {
-      if (auto k = haystack.find(needle, i); k != std::string::npos && k != j) {
-        std::cout << k << ", ";
-        i = k + size(needle);
-      } else {
-        break;
-      }
+    for (size_t i = first, j = last, k = std::string::npos;
+         (k = haystack.find(needle, i)) < j; i = k + size(needle)) {
+      std::cout << k << ", ";
     }
     std::cout << "\n";
   }
@@ -741,14 +737,11 @@ int main() {
     const size_t last = 11; // end(haystack) - begin(haystack); // 11;
 
     std::cout << __LINE__ << ": ";
-    for (auto i = begin(haystack) + first, j = begin(haystack) + last;
-         i != j;) {
-      if (auto k = search(i, j, begin(needle), end(needle)); k != j) {
-        std::cout << k - begin(haystack) << ", ";
-        i = end(needle) - begin(needle) + k;
-      } else {
-        break;
-      }
+    for (auto i = begin(haystack) + first, j = begin(haystack) + last,
+              k = begin(haystack);
+         (k = search(i, j, begin(needle), end(needle))) != j;
+         i = end(needle) - begin(needle) + k) {
+      std::cout << k - begin(haystack) << ", ";
     }
     std::cout << "\n";
   }
@@ -770,14 +763,35 @@ int main() {
     const size_t last = 11; // end(haystack) - begin(haystack); // 11;
 
     std::cout << __LINE__ << ": ";
-    for (auto i = begin(haystack) + first, j = begin(haystack) + last;
-         i != j;) {
-      if (auto k = search(i, j, begin(needle), end(needle)); k != j) {
-        std::cout << k - begin(haystack) << ", ";
-        i = end(needle) - begin(needle) + k;
-      } else {
-        break;
-      }
+    for (auto i = begin(haystack) + first, j = begin(haystack) + last,
+              k = begin(haystack);
+         (k = search(i, j, begin(needle), end(needle))) != j;
+         i = end(needle) - begin(needle) + k) {
+      std::cout << k - begin(haystack) << ", ";
+    }
+    std::cout << "\n";
+  }
+
+  {
+    // 4. single value, std::find(),
+    // search for single value or by predicate
+
+    // "abaCabaCabaCaba"
+    std::vector haystack = {'a', 'b', 'a', 'C', 'a', 'b', 'a', 'C',
+                            'a', 'b', 'a', 'C', 'a', 'b', 'a'};
+    char needle = 'C';
+
+    // std::string haystack = "abababababababa";
+    // std::string needle = "aba";
+
+    const size_t first = 1; // 0;                              // 1;
+    const size_t last = 11; // end(haystack) - begin(haystack); // 11;
+
+    std::cout << __LINE__ << ": ";
+    for (auto i = begin(haystack) + first, j = begin(haystack) + last,
+              k = begin(haystack);
+         (k = std::find(i, j, needle)) != j; i = k + 1) {
+      std::cout << k - begin(haystack) << ", ";
     }
     std::cout << "\n";
   }
