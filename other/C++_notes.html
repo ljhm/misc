@@ -804,13 +804,15 @@ int main() {
 
 
 binary search, lower_bound, upper_bound, partition_point.
-input sequence needs to be already in order.
+input sequence needs to be already in order and sorted by std::sort().
 
+// lower:
 lower_bound(begin(haystack), end(haystack), needle);
-partition_point(begin(haystack), end(haystack), [&needle](auto &x){x < needle}); // lower.
+partition_point(begin(haystack), end(haystack), [&needle](auto &x){x < needle});
 
+// upper:
 upper_bound(begin(haystack), end(haystack), needle);
-partition_point(begin(haystack), end(haystack), [&needle](auto &x){x <= needle}); // upper.
+partition_point(begin(haystack), end(haystack), [&needle](auto &x){x <= needle});
 
 equal_range(begin(haystack), end(haystack), needle);
 
