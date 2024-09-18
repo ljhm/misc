@@ -1053,7 +1053,7 @@ int main() {
 
 size_t lengthOfLongestSubstring(const std::string &s) {
   long max = 0;
-  for (auto i = begin(s), j = i; j < end(s); ++j) {
+  for (auto i = begin(s), j = i; j != end(s); ++j) {
     if (auto k = std::find(i, j, *j); k != j) {
       i = k + 1;
     }
@@ -1110,6 +1110,40 @@ int main() {
 
 
 ---
+
+
+#include <iostream>
+#include <ranges>
+#include <vector>
+
+int main() {
+  // range: 3..5
+  auto first = 3, last = 5;
+  for (int i : std::ranges::views::iota(first, last)) {
+    std::cout << i << "\n";
+  }
+
+  // slice:
+  auto first = 3, last = 5;
+  auto subrange = std::ranges::subrange(begin(v) + first, begin(v) + last);
+  for (auto e : subrange) {
+    std::cout << e << "\n";
+  }
+
+  // slice with copy:
+  // auto first = 3, last = 5;
+  // std::vector v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+  // for (auto e : std::vector(begin(v) + first, begin(v) + last)) {
+  //   std::cout << e << "\n";
+  // }
+
+  return 0;
+}
+
+
+---
+
+
 
 
 
