@@ -1,17 +1,17 @@
 <html>
 
 <head>
-  <style>
-    /* https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme */
-    :root {
-      color-scheme: light dark
-    }
-  </style>
+    <style>
+        /* https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme */
+        :root {
+            color-scheme: light dark
+        }
+    </style>
 </head>
 
 <body>
 
-  <textarea disabled style="
+    <textarea disabled style="
     border: none;
     font-family: monospace;
     font-size: inherit;
@@ -52,8 +52,11 @@ $ sudo apt install curl
 $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 $ source "$HOME/.cargo/env"
-$ rustup update
+$ rustup update stable
 $ cargo update  # in project directory with Cargo.toml
+
+$ rustup doc --book
+$ rustup self uninstall
 
 ## install dir:
 /Users/ljh/.rustup ,
@@ -63,9 +66,6 @@ $ cargo update  # in project directory with Cargo.toml
 /Users/ljh/.profile ,
 /Users/ljh/.zshenv ,
 /Users/ljh/.cargo/env ,
-
-$ rustup doc
-$ rustup self uninstall
 
 ## with homebrew on macOS:
 $ brew install rustup-init
