@@ -1,4 +1,5 @@
 {
+  "accessibility.verbosity.diffEditor": false, //
   "breadcrumbs.enabled": false,
   "breadcrumbs.icons": false,
   "C_Cpp.autoAddFileAssociations": false,
