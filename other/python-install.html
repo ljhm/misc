@@ -774,13 +774,10 @@ hello3.hello3()
 $
 
 $ cat src/logging2.py
-
 # logging2.py
-import os
 import sys
 import logging
 from logging.handlers import RotatingFileHandler
-from datetime import datetime
 
 DEBUG    = logging.debug
 INFO     = logging.info
@@ -790,7 +787,7 @@ CRITICAL = logging.critical
 
 class logging2:
     def __init__(self, filename):
-        size = 10 * 1024 * 1024  # 10MB
+        size = (1024 * 1024) * 100 # MB
         count = 10
         fmt = "%(asctime)s %(levelname)s %(filename)s:%(lineno)d: %(message)s"
         datefmt = "%Y-%m-%d %H:%M:%S %Z"
@@ -805,17 +802,11 @@ class logging2:
         logging.basicConfig(handlers=handlers, level=level)
 
 """
-    import logging
+    import os
     from logging2 import *
     logfile = "hello.log"
     logfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), logfile)
     logging2(logfile)
-
-    logging.debug("")
-    logging.info("")
-    logging.warning("")
-    logging.error("")
-    logging.critical("")
 
     DEBUG("")
     INFO("")
@@ -823,8 +814,6 @@ class logging2:
     ERROR("")
     CRITICAL("")
 """
-
-
 $
 
 
