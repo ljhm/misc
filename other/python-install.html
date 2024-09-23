@@ -1455,6 +1455,54 @@ hello
 ---
 
 
+# check for nested json keys
+
+try:
+    filename = 'data.json'
+    with open(filename, 'r') as file:
+        data = json.load(file)
+
+    key = 'object/currency'.split('/')
+    if len(key) == 2 and key[0] in data and key[1] in data[key[0]]:
+        print2(f'found: {data[key[0]][key[1]]}')
+    else:
+        print2(f'not found: {key}')
+except FileNotFoundError as err:
+    print2(f'{err}')
+except json.decoder.JSONDecodeError as err:
+    print2(f'{err}')
+
+
+'''
+$ cat data.json
+{
+    "pi": 3.141,
+    "happy": true,
+    "name": "Boost",
+    "nothing": null,
+    "answer": {
+        "everything": 20
+    },
+    "list": [
+        1,
+        0,
+        2
+    ],
+    "object": {
+        "currency": "USD",
+        "value": 3.141
+    }
+}
+$
+'''
+
+
+---
+
+
+
+
+
 
 
 
