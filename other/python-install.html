@@ -345,8 +345,18 @@ assigning to an indexed position in the string results in an error.
     word = "python"
     # word[0] = "J"
 
-indexing gets individual characters,
-slicing gets substring.
+indexing is used to obtain individual characters,
+slicing allows you to obtain a substring.
+    word[2:5] # 'tho'
+
+
+---
+
+
+4.7:
+
+arguments are passed using call by value,
+where the value is always an object reference, not the value of the object.
 
 
 ---
@@ -461,21 +471,24 @@ may be negated with not.
 5.8:
 
 # built-in types
-# 1. sequences, index by number, slicing, comparison ==, <,
-#       list mutable, str, tuple,
-# 2. dict mutable, index by key
-# 3. set mutable
+# 1. list, str, tuple; sequences indexed by numbers, comparison == , < ;
+# 2. dict; indexed by keys;
+# 3. set;
+
 
 # list
-L = list();                 print2(type(L))
-L = [];                     print2(type(L))
-L = [1,2,"abc", "bbb"];     print2(type(L))
+L = list();          print2(type(L))
+L = [];              print2(type(L))
+L = [1, 2, "abc",];  print2(type(L))
+L[0] = 100
 L = L[:]
-L[0] = 1
 L.append(3)
 index = L.index(3)
 L.remove(3)
 L.pop()
+L = [100, 200, *L]
+L = L + [300, 400]
+
 
 # str
 s = str()
@@ -484,13 +497,18 @@ s = "abc"
 # s[0] = "A"  # strings are immutable
 s = s[:]
 
+
 # tuple
-t = tuple();        print2(type(t))
-t = ();             print2(type(t))
-t = 1,;             print2(type(t))
-t = 1,2,"abc",;     print2(type(t))
-t = t[:]
+t = tuple();         print2(type(t))
+t = ();              print2(type(t))
+t = 1,;              print2(type(t))
+t = (1,);            print2(type(t))
+t = 1, 2, "abc", ;   print2(type(t))
+t = (1, 2, "abc", ); print2(type(t))
 # t[0] = 100  # tuples are immutable
+t = t[:]
+t = (100, 200, *t)
+t = t + (300, 400)
 
 # dict
 d = dict();         print2(type(d))
@@ -498,12 +516,16 @@ d = {};             print2(type(d))
 d = {"a":1, "b":2}; print2(type(d))
 d["k"] = 3
 del d["k"]
+d = {**d, "c":3, "d":4}
+L = list(d.items())
 
 # set
-s2 = set();          print2(type(s2))
-s2 = {1,2,"abc"};    print2(type(s2))
+s2 = set();         print2(type(s2))
+s2 = {1, 2, "abc"}; print2(type(s2))
 s2.add(3)
 s2.remove(3)
+s2 = {100, 200, *s2}
+s2 = s2 | {300, 400}  # set union
 
 print2("")
 
@@ -838,20 +860,20 @@ $
 import os
 import sys
 
-def print2(*args, sep=" ", end="\n", file=None, flush=False):
+def print2(*values, sep=" ", end="\n", file=None, flush=False):
     frame = sys._getframe(1)
     filename = os.path.basename(frame.f_code.co_filename)
     lineno = frame.f_lineno
-    args = sep.join(map(str, args))
-    print(f"{filename}:{lineno}: {args}", end=end, file=file, flush=flush)
+    values = (filename, lineno, *values)
+    print(*values, sep=sep, end=end, file=file, flush=flush)
 
 print2("aaa", 10, 3.14, True, sep=",")
 print2("bbb", 20, 3.14, False)
 
 """
 $ python3 src/main/main.py
-main.py:11: aaa,10,3.14,True
-main.py:12: bbb 20 3.14 False
+main.py,11,aaa,10,3.14,True
+main.py 12 bbb 20 3.14 False
 $
 """
 
