@@ -1243,36 +1243,39 @@ int main() {
 ---
 
 
+$ cat log.cpp
+
 // boost log
-
-// log.cpp
-
-// ../boost_1_82_0/libs/log/example/rotating_file/main.cpp
+// ../boost_1_86_0/libs/log/example/basic_usage/main.cpp ,
+// ../boost_1_86_0/libs/log/example/rotating_file/main.cpp ,
+// ../boost_1_86_0/libs/log/example/doc/tutorial_fmt_stream.cpp ,
 
 // makefile:
-// CPPFLAGS  = -MMD -MP -I/home/ljh/Downloads/boost_1_86_0 -DBOOST_LOG_DYN_LINK
-// LDFLAGS   = -L/home/ljh/Downloads/boost_1_86_0/stage/lib
+// CPPFLAGS  = -MMD -MP -I../boost_1_86_0 -DBOOST_LOG_DYN_LINK
+// LDFLAGS   = -L../boost_1_86_0/stage/lib
 // LDLIBS    = -lboost_log -lboost_log_setup -lboost_chrono -lboost_filesystem
 //              -lboost_thread -lboost_atomic
 
 // environment variable:
-// $ export LD_LIBRARY_PATH=/home/ljh/Downloads/boost_1_82_0/stage/lib
+// $ LD_LIBRARY_PATH=../boost_1_82_0/stage/lib  ./a.out
 
-#include "log.h"
-#include <boost/core/null_deleter.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/format.hpp>
+#include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <boost/log/attributes.hpp>
+#include <boost/log/attributes/named_scope.hpp>
+#include <boost/log/attributes/timer.hpp>
 #include <boost/log/common.hpp>
 #include <boost/log/expressions.hpp>
 #include <boost/log/sinks/sync_frontend.hpp>
 #include <boost/log/sinks/text_file_backend.hpp>
-#include <boost/log/sinks/text_ostream_backend.hpp>
 #include <boost/log/sources/logger.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/smart_ptr/shared_ptr.hpp>
-#include <iomanip>
-#include <iostream>
+#include <boost/log/sources/record_ostream.hpp>
+#include <boost/log/sources/severity_logger.hpp>
+#include <boost/log/support/date_time.hpp>
+#include <boost/log/trivial.hpp>
+#include <boost/log/utility/setup/common_attributes.hpp>
+#include <boost/log/utility/setup/console.hpp>
+#include <boost/log/utility/setup/file.hpp>
 #include <string>
 
 namespace attrs = boost::log::attributes;
@@ -1282,128 +1285,106 @@ namespace logging = boost::log;
 namespace sinks = boost::log::sinks;
 namespace src = boost::log::sources;
 
-// using boost::shared_ptr;
+/*
+$ cat foo_20240924_220112.711990_CST.log
+2024-09-24 22:01:25.084288 CST [debug  ] main.cpp:11: This is a debug message.
+2024-09-24 22:01:25.084423 CST [info   ] main.cpp:12: This is an info message.
+2024-09-24 22:01:25.084539 CST [warning] main.cpp:13: This is a warning message.
+2024-09-24 22:01:25.084628 CST [error  ] main.cpp:14: This is an error message.
+2024-09-24 22:01:25.085912 CST [fatal  ] main.cpp:15: This is a fatal message.
+2024-09-24 22:01:25.086041 CST [trace  ] main.cpp:10: This is a trace message.
+$
+*/
 
-void boost_log_init(const std::string log_dir, const std::string name) {
-
-  // auto format = expr::format("%1%: %2%")
-  //     % expr::attr< boost::posix_time::ptime >("TimeStamp")
-  //     % expr::smessage;
-
-  auto format = expr::stream
-                << expr::attr<boost::posix_time::ptime>("TimeStamp") << " ["
-                << std::left << std::setw(7) << std::setfill(' ')
-                << logging::trivial::severity << "] " << expr::smessage;
-
-  // auto *facet = new boost::posix_time::time_facet("%Y%m%d %H%M%S"); //
-  // std::locale::global(std::locale(std::locale(), facet)); //
-
-  // Create a text file sink
-  typedef sinks::synchronous_sink<sinks::text_file_backend> file_sink;
-  auto pattern = "_%Y%m%d_%H%M%S_%5N.log";
-  boost::shared_ptr<file_sink> sink(new file_sink(
-      keywords::file_name = log_dir + "/" + name + pattern, // file name pattern
-      keywords::target_file_name = name + pattern,          // file name pattern
-      keywords::rotation_size = 30 * 1024 // rotation size, in characters
-      ));
-
-  // Set up where the rotated files will be stored
-  sink->locked_backend()->set_file_collector(sinks::file::make_collector(
-      keywords::target = log_dir, // where to store rotated files
-      keywords::max_size =
-          16 * 1024 * 1024, // maximum total size of the stored files, in bytes
-      keywords::min_free_space =
-          100 * 1024 * 1024,  // minimum free space on the drive, in bytes
-      keywords::max_files = 7 // maximum number of stored files
-      ));
-
-  // Upon restart, scan the target directory for files matching the file_name
-  // pattern
-  sink->locked_backend()->scan_for_files();
-  sink->set_formatter(format);
-
-  // Add it to the core
-  logging::core::get()->add_sink(sink);
-
-  // Add a console sink
-  typedef sinks::synchronous_sink<sinks::text_ostream_backend> console_sink;
-  boost::shared_ptr<console_sink> consoleSink(new console_sink());
-  consoleSink->locked_backend()->add_stream(
-      boost::shared_ptr<std::ostream>(&std::clog, boost::null_deleter()));
-  consoleSink->set_formatter(format);
-
-  consoleSink->set_filter(logging::trivial::severity >=
-                          logging::trivial::trace);
-  logging::core::get()->add_sink(consoleSink);
-
-  // Add some attributes too
-  logging::core::get()->add_global_attribute("TimeStamp", attrs::local_clock());
+std::string timezone2() {
+  char str[50];
+  std::time_t tm = std::time(nullptr);
+  std::tm local = *std::localtime(&tm);
+  strftime(str, sizeof(str), "%Z", &local);
+  return str;
 }
 
+void initLogging(const std::string &log_dir, const std::string &name) {
+  const std::string pattern =
+      std::string("_%Y%m%d_%H%M%S.%f_") + timezone2() + ".log";
+  const size_t rotation_size = 1024 * 1024 * 1;
+  const size_t max_files = 5;
+  const size_t min_free_space = 1024ULL * 1024 * 1024 * 10;
+  const size_t severity_len = std::strlen("warning");
 
-// log.h
+  auto format = expr::stream
+                << expr::format_date_time<boost::posix_time::ptime>(
+                       "TimeStamp", "%Y-%m-%d %H:%M:%S.%f")
+                << " " << expr::attr<std::string>("Timezone2") << " ["
+                << std::left << std::setw(severity_len) << std::setfill(' ')
+                << logging::trivial::severity << "] " << expr::smessage;
+
+  auto fileSink = logging::add_file_log(
+      keywords::file_name = log_dir + "/" + name + pattern,
+      keywords::target_file_name = name + pattern,
+      keywords::rotation_size = rotation_size, // in characters
+      keywords::auto_flush = true, keywords::target = log_dir,
+      keywords::max_size = rotation_size * max_files, // in bytes
+      keywords::min_free_space = min_free_space,      // in bytes
+      keywords::max_files = max_files,
+      keywords::filter = logging::trivial::severity >= logging::trivial::trace,
+      keywords::format = format);
+
+  auto consoleSink = logging::add_console_log(
+      std::clog,
+      keywords::filter = logging::trivial::severity >= logging::trivial::trace,
+      keywords::format = format);
+
+  logging::core::get()->add_global_attribute(
+      "Timezone2", logging::attributes::make_function<std::string>(&timezone2));
+
+  // Add common attributes like TimeStamp
+  logging::add_common_attributes();
+}
+$
+
+
+$ cat log.h
 
 #ifndef log_h
 #define log_h
 
 #include <boost/log/trivial.hpp>
-#include <string>
 
-// Andrey Semashev, 2016
-// https://stackoverflow.com/questions/35895199/boost-log-and-severity-local-attributes/35919119#35919119
-// #define LOG(lg, sev) \
-//     BOOST_LOG_SEV(lg, sev) << "[" << __FILE__ << ":" << __LINE__ << "]: "
-
+// log macro
 #define LOG(severity)                                                          \
   BOOST_LOG_TRIVIAL(severity) << __FILE__ << ":" << __LINE__ << ": "
 
-// $ date "+%Y-%m-%d %H:%M:%S %Z"
-// 2024-09-24 07:41:59 CST
-// $
-#define LOG2(fmt, ...)                                                         \
-  do {                                                                         \
-    char buf[100];                                                             \
-    time_t now = time(nullptr);                                                \
-    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S %Z", localtime(&now));       \
-    fprintf(stdout, "%s  %s:%d]  " fmt "\n", buf, __FILE__, __LINE__,          \
-            ##__VA_ARGS__);                                                    \
-  } while (0)
-
-void boost_log_init(const std::string log_dir, const std::string name);
+void initLogging(const std::string &log_dir, const std::string &name);
 
 #endif
+$
 
 
-// main.cpp
+$ cat main.cpp
 
 #include "log.h"
-#include <cstdio>
-#include <ctime>
 #include <string>
 
 int main() {
+  const std::string log_dir = "logs"; // get executable directory
+  const std::string name = "foo";
+  initLogging(log_dir, name);
 
-  boost_log_init("logs", "foo");
-
-  // for (;;) {
-  LOG2("%s %d %f", "aaa", 10, 3.14);
-  LOG2("%s %d %f", "bbb", 10, 3.14);
-  LOG2();
-
-  // LOG(trace) << "trace msg!";
-  // LOG(debug) << "debug msg!";
-  // LOG(info) << "info msg!";
-  // LOG(warning) << "warning msg!";
-  // LOG(error) << "error msg!";
-  // LOG(fatal) << "fatal msg!";
-  // LOG(info) << "---";
-  // }
-
+  for (;;) { // test rotation
+    LOG(trace) << "This is a trace message.";
+    LOG(debug) << "This is a debug message.";
+    LOG(info) << "This is an info message.";
+    LOG(warning) << "This is a warning message.";
+    LOG(error) << "This is an error message.";
+    LOG(fatal) << "This is a fatal message.";
+  }
   return 0;
 }
+$
 
 
-// Makefile
+$ cat Makefile
 
 # build dynamic library with -fPIC -shared
 CXXFLAGS    = -std=c++2a -g # -O3 -fPIC # CXXFLAGS for .cpp
@@ -1417,6 +1398,8 @@ main : $(patsubst %.cpp,%.o,$(wildcard *.cpp)) # .cpp
 -include *.d
 clean : ; -rm -fr *.o *.d glog
 .PHONY : clean
+
+$
 
 
 ---
