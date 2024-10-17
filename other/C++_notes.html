@@ -1475,6 +1475,90 @@ $
 ---
 
 
+#include "utf8.h"
+#include <iostream>
+#include <string>
+
+// icu, gnu iconv, utfcpp,
+// https://github.com/nemtrif/utfcpp ;
+
+// std::u32string utf8to32(const std::u8string& s);
+// std::u32string utf8to32(const std::string& s);
+
+#define cout2 (std::cout << __FILE__ << ":" << __LINE__ << ": ")
+int main() {
+  std::string a = "你好世界";
+  cout2 << a.length() << ", ";
+  for (auto c : a) {
+    std::cout << c << " ";
+  }
+  std::cout << "\n";
+
+  std::u8string b = u8"你好世界";
+  cout2 << b.length() << ", ";
+  for (auto c : b) {
+    std::cout << c << " ";
+  }
+  std::cout << "\n";
+
+  std::u32string c = utf8::utf8to32(a);
+  cout2 << c.length() << ", ";
+  for (auto c2 : c) {
+    std::cout << c2 << " ";
+  }
+  std::cout << "\n";
+
+  std::u32string d = utf8::utf8to32(a);
+  cout2 << d.length() << ", ";
+  for (auto d2 : d) {
+    std::cout << d2 << " ";
+  }
+  std::cout << "\n";
+
+  return 0;
+}
+
+/*
+
+- utf-8 is compatible with existing ascii;
+- utf-8 is byte sequence;
+- utf-8 should be converted to utf-32,
+    for character based index, slice or substring;
+
+when it comes to unicode:
+be specific about size, use std::u8string, char8_t instead of std::string, char;
+be certain about the file encoding before parse it, utf-8, gdb, etc.;
+
+---
+
+UTF-8:
+1 to 4 bytes;
+Memory-efficient, compatible with ASCII;
+Variable-length encoding can complicate indexing;
+Web content, network protocols, general text storage
+
+UTF-16:
+2 or 4 bytes;
+Efficient for BMP characters, especially for East Asian scripts;
+Variable-length encoding, not backward compatible with ASCII;
+Applications working with East Asian scripts, Windows systems;
+
+UTF-32:
+Always 4 bytes;
+Fixed length makes indexing easy;
+Inefficient use of memory;
+Situations where constant-time access is needed, specialized processing systems;
+
+*/
+
+
+---
+
+
+
+
+
+
 
 
 
