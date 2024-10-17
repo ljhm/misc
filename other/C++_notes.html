@@ -1479,7 +1479,6 @@ $
 #include <iostream>
 #include <string>
 
-// ascii, unicode, utf, cjk,
 // icu, gnu iconv, utfcpp,
 // https://github.com/nemtrif/utfcpp ;
 
@@ -1488,33 +1487,52 @@ $
 
 #define cout2 (std::cout << __FILE__ << ":" << __LINE__ << ": ")
 int main() {
-  std::string a = "你好世界";
-  cout2 << a.length() << ", ";
-  for (auto c : a) {
-    std::cout << c << " ";
+  {
+    std::string a = "你好世界";
+    cout2 << a.length() << ", ";
+    for (auto c : a) {
+      std::cout << c << " ";
+    }
+    std::cout << "\n";
   }
-  std::cout << "\n";
 
-  std::u8string b = u8"你好世界";
-  cout2 << b.length() << ", ";
-  for (auto c : b) {
-    std::cout << c << " ";
+  {
+    std::u8string a = u8"你好世界";
+    cout2 << a.length() << ", ";
+    for (auto c : a) {
+      std::cout << c << " ";
+    }
+    std::cout << "\n";
   }
-  std::cout << "\n";
 
-  std::u32string c = utf8::utf8to32(a);
-  cout2 << c.length() << ", ";
-  for (auto c2 : c) {
-    std::cout << c2 << " ";
+  {
+    std::u32string a = U"你好世界";
+    cout2 << a.length() << ", ";
+    for (auto c : a) {
+      std::cout << c << " ";
+    }
+    std::cout << "\n";
   }
-  std::cout << "\n";
 
-  std::u32string d = utf8::utf8to32(a);
-  cout2 << d.length() << ", ";
-  for (auto d2 : d) {
-    std::cout << d2 << " ";
+  {
+    std::string a = "你好世界";
+    std::u32string c = utf8::utf8to32(a);
+    cout2 << c.length() << ", ";
+    for (auto c2 : c) {
+      std::cout << c2 << " ";
+    }
+    std::cout << "\n";
   }
-  std::cout << "\n";
+
+  {
+    std::string a = "你好世界";
+    std::u32string d = utf8::utf8to32(a);
+    cout2 << d.length() << ", ";
+    for (auto d2 : d) {
+      std::cout << d2 << " ";
+    }
+    std::cout << "\n";
+  }
 
   return 0;
 }
@@ -1528,7 +1546,7 @@ int main() {
 
 when it comes to unicode:
 be specific about size, use std::u8string, char8_t instead of std::string, char;
-be certain about the file encoding before parse it, utf-8, chinese gbk, etc.;
+be certain about the file encoding before parse it, utf-8, gdb, etc.;
 
 ---
 
