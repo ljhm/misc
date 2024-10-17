@@ -1479,6 +1479,7 @@ $
 #include <iostream>
 #include <string>
 
+// ascii, unicode, utf, cjk,
 // icu, gnu iconv, utfcpp,
 // https://github.com/nemtrif/utfcpp ;
 
@@ -1546,7 +1547,7 @@ int main() {
 
 when it comes to unicode:
 be specific about size, use std::u8string, char8_t instead of std::string, char;
-be certain about the file encoding before parse it, utf-8, gdb, etc.;
+be certain about the file encoding before parse it, utf-8, chinese gbk, etc.;
 
 ---
 
