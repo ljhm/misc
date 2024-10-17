@@ -1575,6 +1575,25 @@ Situations where constant-time access is needed, specialized processing systems;
 ---
 
 
+both compile and link should be with address sanitizer:
+$ make -C src/main
+c++ -fsanitize=address -Wall -Wextra -std=c++2a -g  -MMD -MP  -c -o main.o main.cpp
+c++  -fsanitize=address   main.o   -o main
+$
+
+run the program built with address sanitizer on command line directly;
+do not run executable built with address sanitizer in gdb debugger;
+
+check address sanitizer:
+$ src/main/main
+
+check memory leak with address sanitizer:
+$ LSAN_OPTIONS=verbosity=1:log_threads=1 src/main/main
+
+
+---
+
+
 
 
 
