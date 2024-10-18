@@ -1594,6 +1594,22 @@ $ LSAN_OPTIONS=verbosity=1:log_threads=1 src/main/main
 ---
 
 
+ldd - print shared object dependencies;
+nm - list symbols from object files;
+objdump - display information from object files;
+readelf - display information about ELF files;
+
+$ ldd a.out
+$ nm -D /path/to/library.so | grep foo
+$ objdump -T /path/to/library.so | grep foo
+$ readelf -Ws /path/to/library.so | grep foo
+
+$ LD_LIBRARY_PATH=../boost_1_82_0/stage/lib  ./a.out
+
+
+---
+
+
 
 
 
