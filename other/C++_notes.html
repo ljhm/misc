@@ -1941,6 +1941,83 @@ void drawline2(struct point *from, struct point *to) {
 ---
 
 
+/*
+
+compile boost:
+
+$ tar xf boost_1_86_0.tar.bz2
+$ cd boost_1_86_0
+$ ./bootstrap  # generate b2
+$ ./b2         # build only, do not install ;
+
+# Makefile:
+
+CPPFLAGS += -I/home/ljh/app/boost_1_86_0
+LDFLAGS += -L/home/ljh/app/boost_1_86_0/stage/lib
+
+*/
+
+#include <boost/multiprecision/cpp_dec_float.hpp>
+#include <boost/multiprecision/cpp_int.hpp>
+#include <boost/safe_numerics/safe_integer.hpp>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace boost::safe_numerics;
+using namespace boost::multiprecision;
+
+// typedef number<cpp_dec_float<50>> cpp_dec_float_50;
+// typedef number<cpp_dec_float<100>> cpp_dec_float_100;
+
+// safe numerics
+safe<uint> f1(safe<unsigned long long> a, safe<unsigned long long> b) {
+  return a + b;
+}
+
+// multi precision, checked
+checked_uint256_t f2(checked_uint256_t a, checked_uint256_t b) { return a + b; }
+
+// multi precision
+cpp_int f3(cpp_int a, cpp_int b) { return a + b; }
+
+// multi precision, floating point
+cpp_dec_float_100 f4(cpp_dec_float_100 a, cpp_dec_float_100 b) { return a + b; }
+
+int main() {
+  {
+    auto max = ULLONG_MAX;
+    auto min = 0;
+    // auto a1 = f1(max, max); // error, positive overflow
+    auto a2 = f1(100, 200);
+  }
+
+  {
+    auto mp_max = std::numeric_limits<uint256_t>::max();
+    auto mp_min = std::numeric_limits<uint256_t>::min();
+    // auto b1 = f2(mp_max, mp_max); // error, value overflows
+    auto b2 = f2(100, 200);
+    auto b3 = f3(mp_max, mp_max);
+  }
+
+  {
+    double a1 = 1.2300000000001;
+    double b1 = 1.00;
+    double c1 = a1 + b1;
+    std::cout << __LINE__ << ": " << c1 << "\n";
+
+    cpp_dec_float_100 a2("1.2300000000001");
+    cpp_dec_float_100 b2("1.00");
+    auto c2 = f4(a2, b2);
+    std::cout << __LINE__ << ": " << c2.str() << "\n"; // ok
+  }
+  return 0;
+}
+
+
+---
+
+
 
 
 
