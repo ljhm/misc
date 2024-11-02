@@ -2018,6 +2018,48 @@ int main() {
 ---
 
 
+```
+  // example 1: no gsl::span,
+
+  #include <vector>
+
+  int a[] = {1, 2, 3};
+  a[300000] = 1;
+
+// c++ error at runtime:
+// Segmentation fault (core dumped)
+
+// 1. out of bound indexing in c++ built-in array cause segmentation fault and core dump.
+// 2. address sanitizer can detect error.
+```
+
+```
+  // example 2: with gsl::span, do not use asan with gsl::span.
+
+  // CPPFLAGS += -I/home/ljh/app/GSL/include
+
+  #include <gsl/gsl>  // gsl::span
+  #include <vector>
+
+  std::vector v = {1, 2, 3};
+  gsl::span s = v;
+  s[300000] = 1;
+
+// terminate called without an active exception
+// Aborted (core dumped)
+
+// actually, there is no core dump generated.
+
+// 1. out of bound indexing in c++ gsl::span calls std::terminate,
+//      core dump is NOT generated if address sanitizer is enabled.
+
+// 2. address sanitizer can NOT detect error in this case.
+```
+
+
+---
+
+
 
 
 
