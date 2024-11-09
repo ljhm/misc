@@ -2021,6 +2021,8 @@ int main() {
 // C++ Core Guidelines:
 // If a future evolution of std::span adds bounds checking, gsl::span can be removed.
 
+// CPPFLAGS += -I/home/ljh/app/GSL/include/
+
 #include <gsl/gsl> // github.com/microsoft/gsl,
 #include <vector>
 
@@ -2033,6 +2035,41 @@ int main() {
 
   // gsl:span bound check, generates core dump, address sanitizer not work.
   // s[3] = 1;
+
+  return 0;
+}
+
+
+---
+
+
+// CPPFLAGS += -I/home/ljh/app/GSL/include/
+
+// #include <boost/safe_numerics/safe_integer.hpp>
+#include <gsl/gsl>
+#include <iostream>
+#include <iterator>
+#include <string>
+#include <vector>
+
+// using namespace boost::safe_numerics;
+
+int main() {
+  char a[20] = "hello"; // size: 10, 20,
+  char b[10];           // size: 10,
+  std::vector<char> c;
+
+  // std::copy(std::begin(a), std::end(a), std::begin(b));
+  // std::copy(std::begin(a), std::end(a), std::back_inserter(c));
+
+  // gsl::span is with bound check,
+  // std::span removed bound check.
+
+  gsl::span s1(a);
+  gsl::span s2(b);
+  // gsl::copy(s1, s2); // bound check, src: 20, dest: 10,
+
+  // s1[99] = 'a'; // bound check
 
   return 0;
 }
