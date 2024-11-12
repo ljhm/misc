@@ -2078,12 +2078,25 @@ int main() {
 ---
 
 
+# build dynamic library with -fPIC -shared
+CXXFLAGS = -g # -O3 -fPIC # CXXFLAGS for .cpp
+CPPFLAGS = -MMD -MP # -I../foo -DNDEBUG
+LDFLAGS = # -L../foo -shared
+LDLIBS = # -lfoo
+CC = $(CXX) # link with CXX for .cpp
+
+# target name is basename of one of the source files
+main: $(patsubst %.cpp,%.o,$(wildcard *.cpp)) # .cpp
+-include *.d
+clean: ; $(RM) *.o *.d main
+.PHONY: clean
+
 CPPFLAGS += -I/home/ljh/app/GSL/include/
 CPPFLAGS += -I/home/ljh/app/boost_1_86_0/
 LDFLAGS += -L/home/ljh/app/boost_1_86_0/stage/lib
 
-CXXFLAGS += -std=c++2a -Wall -Wextra -pedantic
-CXXFLAGS += -Wconversion -Wfloat-equal -Wformat -Woverflow -Wsign-conversion -Wuninitialized -Wwrite-strings
+CXXFLAGS += -std=c++2a -Wall -Wextra -Wpedantic
+CXXFLAGS += -Warith-conversion -Wcast-qual -Wconversion -Wfloat-equal -Wformat -Woverflow -Wsign-conversion -Wwrite-strings
 
 # use one sanitizer at a time.
 
