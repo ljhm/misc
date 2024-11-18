@@ -209,8 +209,9 @@ int main(int argc, char **argv) {
 /*
 
 https://github.com/google/sanitizers?tab=readme-ov-file ,
+https://github.com/google/sanitizers/issues/1039#issuecomment-453607726
 
-use one at a time. do not mix them together.
+use one sanitizer at a time. do not mix them together.
 
 AddressSanitizer (detects addressability issues) and LeakSanitizer (detects memory leaks),
 ThreadSanitizer (detects data races and deadlocks) for C++ and Go,
@@ -2125,7 +2126,7 @@ LDFLAGS += -L/home/ljh/app/boost_1_86_0/stage/lib
 CXXFLAGS += -std=c++2a -Wall -Wextra -Wpedantic
 CXXFLAGS += -Warith-conversion -Wcast-qual -Wconversion -Wfloat-equal -Wformat -Woverflow -Wsign-conversion -Wuninitialized -Wwrite-strings
 
-# use one sanitizer at a time.
+# use one sanitizer at a time. do not mix them together.
 # How to use simultaneously Asan and Msan?  #1039
 # https://github.com/google/sanitizers/issues/1039#issuecomment-453607726
 
@@ -2133,13 +2134,13 @@ CXXFLAGS += -Warith-conversion -Wcast-qual -Wconversion -Wfloat-equal -Wformat -
 #CXXFLAGS += -fsanitize=address
 #LDFLAGS += -fsanitize=address
 
-# memory sanitizer, https://github.com/google/sanitizers/wiki/MemorySanitizer,
-#CXXFLAGS += -fsanitize=memory -fPIE -pie
-#LDFLAGS += -fsanitize=memory -fPIE -pie
-
 # undefined behavior sanitizer, https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html,
 #CXXFLAGS += -fsanitize=undefined
 #LDFLAGS += -fsanitize=undefined
+
+# memory sanitizer, https://github.com/google/sanitizers/wiki/MemorySanitizer,
+#CXXFLAGS += -fsanitize=memory -fPIE -pie
+#LDFLAGS += -fsanitize=memory -fPIE -pie
 
 # thread sanitizer, https://clang.llvm.org/docs/ThreadSanitizer.html,
 #CXXFLAGS += -fsanitize=thread
