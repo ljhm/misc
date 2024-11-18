@@ -2078,6 +2078,29 @@ int main() {
 ---
 
 
+int main() {
+  int a[3] = {1,2,3};
+  a[0] = 1;
+  a[3] = 1;       // asan, address sanitize
+  a[102400] = 1;  // ubsan, undefined behavior sanitize
+  return 0;
+}
+
+/*
+# address sanitizer
+CXXFLAGS += -fsanitize=address
+LDFLAGS += -fsanitize=address
+
+# undefined behavior sanitizer
+CXXFLAGS += -fsanitize=undefined
+LDFLAGS += -fsanitize=undefined
+
+*/
+
+
+---
+
+
 # build dynamic library with -fPIC -shared
 CXXFLAGS = -g # -O3 -fPIC # CXXFLAGS for .cpp
 CPPFLAGS = -MMD -MP # -I../foo -DNDEBUG
@@ -2091,12 +2114,16 @@ main: $(patsubst %.cpp,%.o,$(wildcard *.cpp)) # .cpp
 clean: ; $(RM) *.o *.d main
 .PHONY: clean
 
+
+---
+
+
 CPPFLAGS += -I/home/ljh/app/GSL/include/
 CPPFLAGS += -I/home/ljh/app/boost_1_86_0/
 LDFLAGS += -L/home/ljh/app/boost_1_86_0/stage/lib
 
 CXXFLAGS += -std=c++2a -Wall -Wextra -Wpedantic
-CXXFLAGS += -Warith-conversion -Wcast-qual -Wconversion -Wfloat-equal -Wformat -Woverflow -Wsign-conversion -Wwrite-strings
+CXXFLAGS += -Warith-conversion -Wcast-qual -Wconversion -Wfloat-equal -Wformat -Woverflow -Wsign-conversion -Wuninitialized -Wwrite-strings
 
 # use one sanitizer at a time.
 # How to use simultaneously Asan and Msan?  #1039
