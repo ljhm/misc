@@ -2169,6 +2169,11 @@ For [sanitizer_name] use one of the following:
 
 -fsanitize=thread (cannot be combined with address, leak);
 
+-fsanitize=memory (gcc has no msan. use clang if needed);
+
+https://github.com/google/sanitizers/issues/1039#issuecomment-453306241 ,
+  "GCC doesn't have msan at all."  --kcc, Jan 11, 2019
+
 
 ---
 
