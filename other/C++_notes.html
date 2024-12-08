@@ -2114,10 +2114,9 @@ clean: ; $(RM) *.o *.d main
 # use clang for C program:
 #CC        = clang
 
-# use clang++ for C++ program: link to libc++ instead of libstdc++,
+# use clang++ for C++ program, need ` CC = $(CXX) ` too,
 #CXX       = clang++
-#CXXFLAGS += -stdlib=libc++
-#LDFLAGS  += -stdlib=libc++
+#CC        = $(CXX) # link with CXX for .cpp
 
 # additional flags
 CPPFLAGS += -I/home/ljh/app/GSL/include/
@@ -2131,7 +2130,6 @@ CXXFLAGS += -Warith-conversion -Wcast-qual -Wconversion -Wfloat-equal -Wformat -
 #   "asan+lsan+ubsan is fine, the rest should run separately."  --kcc, Jan 12, 2019
 
 # address (including leak), undefined behavior sanitizers,
-# (clang++ can not report leaks on debian 12 testing, but g++ can.)
 # CXXFLAGS += -fsanitize=address -fsanitize=leak -fsanitize=undefined
 # LDFLAGS += -fsanitize=address -fsanitize=leak -fsanitize=undefined
 
@@ -2330,7 +2328,7 @@ like file handle, network or database connection, etc., is used directly.
 
 Encapsulate the resource into a class like ifstream,
 call the deleter in the class destructor like the ifstream close the file in its destructor,
-the the deleter usage is not needed.
+then the deleter usage is not needed.
 
 
 ---
