@@ -2265,6 +2265,9 @@ clean: ; $(RM) *.o *.d main
 #CXXFLAGS += -stdlib=libc++
 #LDFLAGS  += -stdlib=libc++
 
+# fully static link: libstdc++.so , libc.so , etc. ,
+#LDFLAGS  += -static
+
 # additional flags
 CPPFLAGS += -I/home/ljh/app/GSL/include/
 CPPFLAGS += -I/home/ljh/app/boost_1_86_0/
