@@ -2029,9 +2029,12 @@ objdump - display information from object files;
 readelf - display information about ELF files;
 
 $ ldd a.out
-$ nm -D /path/to/library.so | grep foo
-$ objdump -T /path/to/library.so | grep foo
-$ readelf -Ws /path/to/library.so | grep foo
+$ ar -t libfoo.a # list member object files: foo.o bar.o
+$ nm -a /path/to/library.so | grep foo # symbol
+$ nm -D /path/to/library.so | grep foo # dynamic symbol
+$ objdump -t /path/to/library.so | grep ".text" # symbol table
+$ objdump -T /path/to/library.so | grep ".text" # dynamic symbol table
+$ readelf -Ws /path/to/library.so | grep FUNC
 
 $ LD_LIBRARY_PATH=../boost_1_82_0/stage/lib  ./a.out
 
@@ -2243,17 +2246,25 @@ LDFLAGS += -fsanitize=address -fsanitize=undefined
 
 
 # build dynamic library with -fPIC -shared
-CXXFLAGS = -g # -O3 -fPIC # CXXFLAGS for .cpp
+CFLAGS = -g # -O3 -fPIC # CXXFLAGS for .cpp
 CPPFLAGS = -MMD -MP # -I../foo -DNDEBUG
 LDFLAGS  = # -L../foo -shared
 LDLIBS   = # -lfoo
-CC       = $(CXX) # link with CXX for .cpp
+#CC       = $(CXX) # link with CXX for .cpp
 
 # target name is basename of one of the source files
-main: $(patsubst %.cpp,%.o,$(wildcard *.cpp)) # .cpp
+main: $(patsubst %.c,%.o,$(wildcard *.c)) # .cpp
 -include *.d
 clean: ; $(RM) *.o *.d main
 .PHONY: clean
+
+# archive static library
+# $ make libfoo.a
+#ARFLAGS = rv
+(%) : % ;
+%.a : ; $(AR) $(ARFLAGS) $@ $?
+libfoo.a: $(patsubst %.c,%.o,$(wildcard *.c)) # .cpp
+
 
 # use clang for C program:
 #CC        = clang
