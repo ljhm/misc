@@ -2263,12 +2263,11 @@ clean: ; $(RM) *.o *.d main
 (%) : % ;
 %.a : ; $(AR) $(ARFLAGS) $@ $?
 
-# non archive(member) syntax
+# non archive(member) syntax, gnu make manual 10.5.3 automatic variables: `$?`
 #ARFLAGS = rv
-# gnu make manual 10.5.3 automatic variable `$?`
 libfoo.a: $(patsubst %.c,%.o,$(wildcard *.c)) # .cpp
 
-# archive(member) syntax `a(m)` requires ar 2.43 option `U` on debian 12
+# archive(member) syntax `a(m)`, requires ar 2.43 option `U` on debian 12
 #ARFLAGS = rvU
 #libfoo.a: libfoo.a($(patsubst %.c,%.o,$(wildcard *.c))) # .cpp
 
