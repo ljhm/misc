@@ -2704,6 +2704,38 @@ int main() {
   return 0;
 }
 
+// sort the vector in ascending order
+void qsort2(std::vector<int> &v, int left, int right) {
+  if (left >= right) {
+    return;
+  }
+
+  auto mid = (left + right) / 2;
+
+  for (auto i = left; i < mid;) {
+    if (v[i] > v[mid]) {
+      v.insert(begin(v) + mid + 1, v[i]);
+      v.erase(begin(v) + i);
+      mid--;
+    } else {
+      i++;
+    }
+  }
+
+  for (auto i = mid + 1; i <= right;) {
+    if (v[i] < v[mid]) {
+      v.insert(begin(v) + mid, v[i]);
+      v.erase(begin(v) + i + 1);
+      mid++;
+    } else {
+      i++;
+    }
+  }
+
+  qsort2(v, left, mid - 1);
+  qsort2(v, mid + 1, right);
+}
+
 ---
 
 // binary search, K&R C chapter 3.3, https://leetcode.cn/problems/binary-search/ ,
