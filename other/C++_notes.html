@@ -2722,13 +2722,11 @@ void qsort2(std::vector<int> &v, int left, int right) {
     }
   }
 
-  for (auto i = mid + 1; i <= right;) {
+  for (auto i = mid + 1; i <= right; i++) {
     if (v[i] < v[mid]) {
       v.insert(begin(v) + mid, v[i]);
       v.erase(begin(v) + i + 1);
       mid++;
-    } else {
-      i++;
     }
   }
 
