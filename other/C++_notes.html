@@ -2628,6 +2628,23 @@ which can not be replaced by destructor directly.
 ---
 
 
+Templates and Compile-Time Polymorphism:
+Templates in C++ allow functions and classes to operate with generic types.
+When you define a template, the compiler generates the appropriate function or
+class for each type used in the template.
+This mechanism is known as compile-time polymorphism because the decision about
+which function or class to use is made at compile time.
+
+Virtual Functions and Runtime Polymorphism:
+Virtual functions enable you to achieve runtime polymorphism in C++.
+They allow derived classes to override methods defined in base classes.
+The decision about which function to invoke is made at runtime based on the type
+of the object pointed to by the base class pointer/reference.
+
+
+---
+
+
 $ gcc a.c # -o a.out # default output executable name
 $
 $ a.out
