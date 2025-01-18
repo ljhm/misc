@@ -2275,7 +2275,7 @@ libfoo.a: $(patsubst %.c,%.o,$(wildcard *.c)) # .cpp
 #CC        = clang
 
 # use clang++ for C++ program, link with libc++ instead of libstdc++,
-# $ sudo apt install llvm clang lldb libc++-dev libc++abi-dev
+# $ sudo apt install clang llvm lldb libc++-dev libc++abi-dev
 #CXX       = clang++
 #CC        = $(CXX) # link with CXX for .cpp
 #CXXFLAGS += -stdlib=libc++
@@ -2819,12 +2819,12 @@ $ vi /etc/apk/repositories
 #http://dl-cdn.alpinelinux.org/alpine/v3.12/main
 #http://dl-cdn.alpinelinux.org/alpine/v3.12/community
 
-# 清华源
+# mirror source
 # keep version number "n.nn" same as the existing ones in file
 http://mirrors.tuna.tsinghua.edu.cn/alpine/v3.12/main
 http://mirrors.tuna.tsinghua.edu.cn/alpine/v3.12/community
 
-#[ iSH v1.2.3 已内置 apk, 不再需要此下载
+#[ iSH v1.2.3 has builtin apk, no need to manual download
 # $ tar xf apk-tools-static-2.10.5-r1.apk
 # $ ./sbin/apk.static add apk-tools
 #]
@@ -2858,10 +2858,10 @@ $ vi .inputrc
 set editing-mode vi
 $
 
-$ apk info -L boost-dev  # 文件路径
-$ apk info --who-owns /bin/ls  # 归属包
+$ apk info -L boost-dev  # file path directory
+$ apk info --who-owns /bin/ls  # package
 /bin/ls .. is owned by busybox-1.xx
-$ apk info -R build-base  # 依赖包
+$ apk info -R build-base  # dependencies
 
 # list package content
 # install destination path
@@ -2872,11 +2872,12 @@ usr/include/boost/align.hpp
 usr/lib/libboost_atomic.so
 ...
 
-----
+---
 
-vi 打开文档乱码, 用 vim, neovim 代替
+if vi open file in wrong character encoding,
+use vim, neovim instead,
 
-----
+---
 
 //man pages wrong characters
 
@@ -2892,6 +2893,23 @@ $
 
 
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
