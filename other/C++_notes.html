@@ -2958,6 +2958,16 @@ int main(void) {
   // memmove(str1, str1 + 2, 4); // ok
 }
 
+/*
+
+main.cpp:10:9: warning: ‘void* memcpy(void*, const void*, size_t)’ accessing 4 bytes at offsets 2 and 0 overlaps 2 bytes at offset 2 [-Wrestrict]
+   10 |   memcpy(str1 + 2, str1, 4); // overlap
+      |   ~~~~~~^~~~~~~~~~~~~~~~~~~
+main.cpp:11:9: warning: ‘void* memcpy(void*, const void*, size_t)’ accessing 4 bytes at offsets 0 and 2 overlaps 2 bytes at offset 2 [-Wrestrict]
+   11 |   memcpy(str1, str1 + 2, 4); // overlap
+
+*/
+
 
 ---
 
