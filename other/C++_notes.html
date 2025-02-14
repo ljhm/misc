@@ -2960,12 +2960,35 @@ int main(void) {
 
 /*
 
+both reported by ` -Wall `:
+
 main.cpp:10:9: warning: ‘void* memcpy(void*, const void*, size_t)’ accessing 4 bytes at offsets 2 and 0 overlaps 2 bytes at offset 2 [-Wrestrict]
    10 |   memcpy(str1 + 2, str1, 4); // overlap
       |   ~~~~~~^~~~~~~~~~~~~~~~~~~
 main.cpp:11:9: warning: ‘void* memcpy(void*, const void*, size_t)’ accessing 4 bytes at offsets 0 and 2 overlaps 2 bytes at offset 2 [-Wrestrict]
    11 |   memcpy(str1, str1 + 2, 4); // overlap
 
+
+both reported by asan (with clang on macOS):
+
+$ make -C src/main && src/main/main
+c++ -g  -std=c++2a -Wall -Wextra -Wpedantic -Wcast-qual -Wconversion -Wfloat-equal -Wformat -Woverflow -Wsign-conversion -Wuninitialized -Wwrite-strings -fsanitize=address -fsanitize=undefined  -MMD -MP  -I/home/ljh/app/GSL/include/ -I/home/ljh/app/boost_1_86_0/  -c -o main.o main.cpp
+c++   -L/home/ljh/app/boost_1_86_0/stage/lib -fsanitize=address -fsanitize=undefined   main.o   -o main
+ld: warning: directory not found for option '-L/home/ljh/app/boost_1_86_0/stage/lib'
+=================================================================
+==1245==ERROR: AddressSanitizer: memcpy-param-overlap: memory ranges [0x00010c1fa062,0x00010c1fa066) and [0x00010c1fa060, 0x00010c1fa064) overlap
+    #0 0x10c678e7d in __asan_memcpy+0xad (libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x48e7d)
+    #1 0x10c1f5e42 in main main.cpp:10
+    #2 0x11501852d in start+0x1cd (dyld:x86_64+0x552d)
+
+0x00010c1fa062 is located 2 bytes inside of global variable 'str1' defined in 'main.cpp:7:6' (0x10c1fa060) of size 7
+  'str1' is ascii string 'aabbcc'
+0x00010c1fa060 is located 0 bytes inside of global variable 'str1' defined in 'main.cpp:7:6' (0x10c1fa060) of size 7
+  'str1' is ascii string 'aabbcc'
+SUMMARY: AddressSanitizer: memcpy-param-overlap (libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x48e7d) in __asan_memcpy+0xad
+==1245==ABORTING
+zsh: abort      src/main/main
+$
 */
 
 
