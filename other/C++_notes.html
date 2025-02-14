@@ -2906,6 +2906,62 @@ $
 ---
 
 
+/*
+https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/memcpy-wmemcpy?view=msvc-170
+
+void *memcpy( void *dest, const void *src, size_t count );
+
+memcpy copies count bytes from src to dest; wmemcpy copies count wide
+characters. If the source and destination regions overlap, the behavior of
+memcpy is undefined. Use memmove to handle overlapping regions.
+*/
+
+/*
+https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/memmove-wmemmove?view=msvc-170
+
+void *memmove( void *dest, const void *src, size_t count );
+
+Copies count bytes (memmove) or characters (wmemmove) from src to dest. If some
+portions of the source and the destination regions overlap, both functions
+ensure that the original source bytes in the overlapping region are copied
+before being overwritten.
+*/
+
+// crt_memcpy.c
+//
+// Illustrate overlapping copy:
+//
+// memmove always handles it correctly;
+//
+// memcpy may handle it correctly (or incorrectly).
+//
+
+#include <memory.h>
+#include <stdio.h>
+#include <string.h>
+
+const char *str0 = "aabbcc";
+char str1[7] = str0;
+
+int main(void) {
+
+  // if src and dest point to same array and if there is overlap,
+  // no matter src is before or after dest,
+  // it renders memcpy undefined, use memmove instead in case of overlap.
+
+  // overlap case 1: src is before dest
+  memcpy(str1 + 2, str1, 4);  // undefined!
+  memmove(str1 + 2, str1, 4); // ok
+
+  // overlap case 2: src is after dest
+  // memcpy(str1, str1 + 2, 4); // undefined!
+  // memmove(str1, str1 + 2, 4); // ok
+}
+
+
+---
+
+
 
 
 
